@@ -6,7 +6,7 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 /**
  * Created by JAkutenshi on 25.05.2016.
  */
-public class OpenFileAction extends AnAction {
+public class ImportXMLAction extends AnAction {
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         //ToDo

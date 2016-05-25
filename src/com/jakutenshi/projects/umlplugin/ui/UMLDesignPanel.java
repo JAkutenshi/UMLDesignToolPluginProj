@@ -17,8 +17,8 @@ public class UMLDesignPanel extends SimpleToolWindowPanel {
 
         final ActionManager actionManager = ActionManager.getInstance();
         ActionToolbar actionToolbar =
-                actionManager.createActionToolbar("UML Design toolbar",
-                        (ActionGroup) actionManager.getAction("UMLDesignPlugin.Toolbar"),
+                actionManager.createActionToolbar("UML Plugin toolbar",
+                        (ActionGroup) actionManager.getAction("UMLPlugin.UI.Toolbar"),
                         true);
         setToolbar(actionToolbar.getComponent());
         setContent(ScrollPaneFactory.createScrollPane(new JPanel()));
