@@ -37,6 +37,7 @@
   </extensions>
 
   <actions>
+
     <!-- Add your actions here -->
       <action class="com.jakutenshi.projects.umlplugin.actions.OpenFileAction"
               id="UMLPlugin.OpenFile"
@@ -83,5 +84,23 @@
           <separator/>
           <reference ref="UMLPlugin.CreateElement"/>
       </group>
+
+      <group id="UMLPlugin.UI.ToolsMenu"
+             text="UML Plugin Tools"
+             popup="true"
+             description="UML Plugin Tools">
+          <add-to-group group-id="ToolsMenu"/>
+          <reference ref="UMLPlugin.OpenFile"/>
+          <separator/>
+          <reference ref="UMLPlugin.GenDiagram"/>
+          <separator/>
+          <reference ref="UMLPlugin.ExportXML"/>
+          <reference ref="UMLPlugin.ImportXML"/>
+          <separator/>
+          <reference ref="UMLPlugin.CreateElement"/>
+      </group>
+
+
+
   </actions>
 </idea-plugin>
