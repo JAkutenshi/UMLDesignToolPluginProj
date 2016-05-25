@@ -1,0 +1,56 @@
+<idea-plugin>
+  <id>com.jakutenshi.projects.umlplugin</id>
+  <name>UML Design Tool Plugin</name>
+  <version>0.1</version>
+  <vendor email="jakutenshi@gmail.com">JAkutenshi</vendor>
+
+  <description><![CDATA[
+      Plugin for IntelliJ IDEA CE 2016.1.1 for UML designing and code generation. <br>
+      Starts as my Bachelor's grade works.<br>
+      <br>
+      by JAkutenshi<br>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Alpha version.
+      Can do... Nothing :< Yet.
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="141.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <toolWindow id="UML design tool window"
+                icon="/icons/tool-window.png"
+                anchor="right"
+                factoryClass="com.jakutenshi.projects.umlplugin.ui.UMLDesignToolWindowFactory">
+    </toolWindow>
+
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+      <group id="UMLDesignPlugin.Toolbar">
+          <!--reference ref="umlplugin.open-file-action"></reference-->
+      </group>
+
+      <action class="com.jakutenshi.projects.umlplugin.actions.OpenFileAction"
+              id="umlplugin.open-file-action"
+              text="Open file info"
+              description="Show info about file into Tool Window"
+              icon="/icons/open-file.png">
+          <add-to-group group-id="UMLDesignPlugin.Toolbar" anchor="last"></add-to-group>
+      </action>
+
+
+  </actions>
+
+</idea-plugin>
