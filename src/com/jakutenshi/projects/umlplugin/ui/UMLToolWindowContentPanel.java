@@ -11,15 +11,18 @@ import javax.swing.*;
 /**
  * Created by JAkutenshi on 25.05.2016.
  */
-public class UMLDesignPanel extends SimpleToolWindowPanel {
-    public UMLDesignPanel() {
+public class UMLToolWindowContentPanel extends SimpleToolWindowPanel {
+    private final ActionManager actionManager;
+    private final ActionToolbar actionToolbar;
+
+    public UMLToolWindowContentPanel() {
         super(true, true);
 
-        final ActionManager actionManager = ActionManager.getInstance();
-        ActionToolbar actionToolbar =
-                actionManager.createActionToolbar("UML Plugin toolbar",
-                        (ActionGroup) actionManager.getAction("UMLPlugin.UI.Toolbar"),
-                        true);
+        actionManager = ActionManager.getInstance();
+        actionToolbar = actionManager.createActionToolbar(
+                "toolbar",
+                (ActionGroup) actionManager.getAction("UMLPlugin.UI.Toolbar"),
+                true);
         setToolbar(actionToolbar.getComponent());
         setContent(ScrollPaneFactory.createScrollPane(new JPanel()));
     }

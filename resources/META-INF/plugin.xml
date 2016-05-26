@@ -1,106 +1,97 @@
 <idea-plugin>
-  <id>com.jakutenshi.projects.umlplugin</id>
-  <name>UML Design Tool Plugin</name>
-  <version>0.1</version>
-  <vendor email="jakutenshi@gmail.com">JAkutenshi</vendor>
+    <id>com.jakutenshi.projects.umlplugin</id>
+    <name>UML Design Tool Plugin</name>
+    <version>0.1</version>
+    <vendor email="jakutenshi@gmail.com">JAkutenshi</vendor>
 
-  <description><![CDATA[
-      Plugin for IntelliJ IDEA CE 2016.1.1 for UML designing and code generation. <br>
-      Starts as my Bachelor's grade works.<br>
-      <br>
-      by JAkutenshi<br>
+    <description><![CDATA[
+        Plugin for IntelliJ IDEA CE 2016.1.1 for UML designing and code generation. <br>
+        Starts as my Bachelor's grade works.<br>
+        <br>
+        by JAkutenshi<br>
     ]]></description>
 
-  <change-notes><![CDATA[
-      Alpha version.
-      Can do... Nothing :< Yet.
-    ]]>
-  </change-notes>
+    <change-notes><![CDATA[
+        Alpha version.
+        Can do... Nothing :< Yet.
+        ]]>
+    </change-notes>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
-  <idea-version since-build="141.0"/>
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+    <idea-version since-build="141.0"/>
 
-  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-       on how to target different products -->
-  <!-- uncomment to enable plugin in all products
-  <depends>com.intellij.modules.lang</depends>
-  -->
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+    on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
 
-  <extensions defaultExtensionNs="com.intellij">
-    <!-- Add your extensions here -->
-    <toolWindow id="UML design tool window"
-                icon="/icons/tool-window.png"
-                anchor="right"
-                factoryClass="com.jakutenshi.projects.umlplugin.ui.UMLDesignToolWindowFactory">
-    </toolWindow>
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <toolWindow id="UML design tool window"
+                    icon="/icons/tool-window.png"
+                    anchor="right"
+                    factoryClass="com.jakutenshi.projects.umlplugin.ui.UMLPluginToolWindowFactory">
+        </toolWindow>
+    </extensions>
 
-  </extensions>
+    <actions>
+        <!-- Add your actions here -->
+        <action class="com.jakutenshi.projects.umlplugin.actions.OpenFileAction"
+                id="UMLPlugin.OpenFile"
+                text="Open file info"
+                description="Show info about file into Tool Window"
+                icon="/icons/open-file.png">
+        </action>
+        <action class="com.jakutenshi.projects.umlplugin.actions.GenDiagramAction"
+                id="UMLPlugin.GenDiagram"
+                text="Generate diagram"
+                description="Generate class-diagram by your code"
+                icon="/icons/gen-diagram.png">
+        </action>
+        <action class="com.jakutenshi.projects.umlplugin.actions.ExportXMLAction"
+                id="UMLPlugin.ExportXML"
+                text="Export XML"
+                description="Export class-diagram to XML-file"
+                icon="/icons/export-xml.png">
+        </action>
+        <action class="com.jakutenshi.projects.umlplugin.actions.ImportXMLAction"
+                id="UMLPlugin.ImportXML"
+                text="Import XML"
+                description="Import elements from XML-file"
+                icon="/icons/import-xml.png">
+        </action>
+        <action class="com.jakutenshi.projects.umlplugin.actions.CreateElementAction"
+                id="UMLPlugin.CreateElement"
+                text="Create Element"
+                description="Create new element to class-diagram"
+                icon="/icons/create-element.png">
+        </action>
 
-  <actions>
+		<group id="UMLPlugin.UI.Toolbar">
+            <reference ref="UMLPlugin.OpenFile"/>
+            <separator/>
+            <reference ref="UMLPlugin.GenDiagram"/>
+            <separator/>
+            <reference ref="UMLPlugin.ExportXML"/>
+            <reference ref="UMLPlugin.ImportXML"/>
+            <separator/>
+            <reference ref="UMLPlugin.CreateElement"/>
+        </group>
 
-    <!-- Add your actions here -->
-      <action class="com.jakutenshi.projects.umlplugin.actions.OpenFileAction"
-              id="UMLPlugin.OpenFile"
-              text="Open file info"
-              description="Show info about file into Tool Window"
-              icon="/icons/open-file.png">
-      </action>
-      <action class="com.jakutenshi.projects.umlplugin.actions.GenDiagramAction"
-              id="UMLPlugin.GenDiagram"
-              text="Generate diagram"
-              description="Generate class-diagram by your code"
-              icon="/icons/gen-diagram.png">
-
-      </action>
-      <action class="com.jakutenshi.projects.umlplugin.actions.ExportXMLAction"
-              id="UMLPlugin.ExportXML"
-              text="Export XML"
-              description="Export class-diagram to XML-file"
-              icon="/icons/export-xml.png">
-
-      </action>
-      <action class="com.jakutenshi.projects.umlplugin.actions.ImportXMLAction"
-              id="UMLPlugin.ImportXML"
-              text="Import XML"
-              description="Import elements from XML-file"
-              icon="/icons/import-xml.png">
-
-      </action>
-      <action class="com.jakutenshi.projects.umlplugin.actions.CreateElementAction"
-              id="UMLPlugin.CreateElement"
-              text="Create Element"
-              description="Create new element to class-diagram"
-              icon="/icons/create-element.png">
-
-      </action>
-
-      <group id="UMLPlugin.UI.Toolbar">
-          <reference ref="UMLPlugin.OpenFile"/>
-          <separator/>
-          <reference ref="UMLPlugin.GenDiagram"/>
-          <separator/>
-          <reference ref="UMLPlugin.ExportXML"/>
-          <reference ref="UMLPlugin.ImportXML"/>
-          <separator/>
-          <reference ref="UMLPlugin.CreateElement"/>
-      </group>
-
-      <group id="UMLPlugin.UI.ToolsMenu"
-             text="UML Plugin Tools"
-             popup="true"
-             description="UML Plugin Tools">
-          <add-to-group group-id="ToolsMenu"/>
-          <reference ref="UMLPlugin.OpenFile"/>
-          <separator/>
-          <reference ref="UMLPlugin.GenDiagram"/>
-          <separator/>
-          <reference ref="UMLPlugin.ExportXML"/>
-          <reference ref="UMLPlugin.ImportXML"/>
-          <separator/>
-          <reference ref="UMLPlugin.CreateElement"/>
-      </group>
-
-
-
-  </actions>
+        <group id="UMLPlugin.UI.ToolsMenu"
+               text="UML Plugin Tools"
+               popup="true"
+               description="UML Plugin Tools">
+            <add-to-group group-id="ToolsMenu"/>
+            <reference ref="UMLPlugin.OpenFile"/>
+            <separator/>
+            <reference ref="UMLPlugin.GenDiagram"/>
+            <separator/>
+            <reference ref="UMLPlugin.ExportXML"/>
+            <reference ref="UMLPlugin.ImportXML"/>
+            <separator/>
+            <reference ref="UMLPlugin.CreateElement"/>
+        </group>
+    </actions>
 </idea-plugin>

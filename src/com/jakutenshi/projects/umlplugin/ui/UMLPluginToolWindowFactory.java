@@ -7,19 +7,19 @@ import com.intellij.ui.content.Content;
 import com.intellij.ui.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
-import javax.swing.*;
+
 
 /**
  * Created by JAkutenshi on 25.05.2016.
  */
-public class UMLDesignToolWindowFactory implements ToolWindowFactory {
-    private ToolWindow UMLDesignToolWindow;
-    private UMLDesignPanel panel;
+public class UMLPluginToolWindowFactory implements ToolWindowFactory {
+    private ToolWindow UMLPluginToolWindow;
+    private UMLToolWindowContentPanel panel;
 
     @Override
     public void createToolWindowContent(@NotNull Project project, @NotNull ToolWindow toolWindow) {
-        panel = new UMLDesignPanel();
-        UMLDesignToolWindow = toolWindow;
+        panel = new UMLToolWindowContentPanel();
+        UMLPluginToolWindow = toolWindow;
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
         Content content = contentFactory.createContent(panel, "", false);
         toolWindow.getContentManager().addContent(content);
