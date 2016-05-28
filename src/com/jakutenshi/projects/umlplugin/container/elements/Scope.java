@@ -3,7 +3,7 @@ package com.jakutenshi.projects.umlplugin.container.elements;
 /**
  * Created by JAkutenshi on 27.05.2016.
  */
-public enum Modifier {
+public enum Scope {
     PUBLIC {
         @Override
         public String toString() {

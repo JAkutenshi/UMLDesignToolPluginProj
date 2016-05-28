@@ -9,7 +9,7 @@ public class UMLClass extends UMLElement {
     private String title;
     private ArrayList<Field> fields;
     private ArrayList<Method> methods;
-    private ArrayList<Attribute> template;
+    private ArrayList<Parameter> template;
 
     public UMLClass(Stereotype aType, String aPath, String aName) {
         super(aType, aPath, aName);
@@ -20,8 +20,8 @@ public class UMLClass extends UMLElement {
         methods = new ArrayList<>();
     }
 
-    public void addMethod(Modifier modifier, String methodName, String returnType, Property property, ArrayList<Attribute> attributes) {
-        methods.add(new Method(modifier, methodName, returnType, property, attributes));
+    public void addMethod(Method method) {
+        methods.add(method);
     }
 
 }
