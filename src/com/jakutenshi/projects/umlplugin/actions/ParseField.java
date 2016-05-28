@@ -1,16 +1,11 @@
 package com.jakutenshi.projects.umlplugin.actions;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiModifierList;
-import com.jakutenshi.projects.umlplugin.container.elements.Field;
-import com.jakutenshi.projects.umlplugin.container.elements.Scope;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
 public class ParseField {
-    public static Field parseField(PsiField psiField) {
+    /*public static Field parseField(PsiField psiField) {
         Field newField = new Field();
         //модификаторы
         modifiersAnalyse(newField, psiField);
@@ -50,5 +45,5 @@ public class ParseField {
                     break;
             }
         }
-    }
+    }*/
 }

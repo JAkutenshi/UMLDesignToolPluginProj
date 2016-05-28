@@ -8,8 +8,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.jakutenshi.projects.umlplugin.container.DiagramContainer;
-import com.jakutenshi.projects.umlplugin.container.elements.Field;
-import com.jakutenshi.projects.umlplugin.container.elements.Method;
+
 
 /**
  * Created by JAkutenshi on 25.05.2016.

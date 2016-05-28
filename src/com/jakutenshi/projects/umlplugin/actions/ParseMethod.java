@@ -1,17 +1,11 @@
 package com.jakutenshi.projects.umlplugin.actions;
 
-import com.intellij.psi.*;
-import com.jakutenshi.projects.umlplugin.container.elements.Method;
-import com.jakutenshi.projects.umlplugin.container.elements.Scope;
-import com.jakutenshi.projects.umlplugin.container.elements.Parameter;
-
-import java.util.ArrayList;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
 public class ParseMethod {
-    public static Method createMethod(PsiMethod psiMethod) {
+    /*public static Method createMethod(PsiMethod psiMethod) {
         Method method = new Method();
         //разбираем модификаторы
         modifiersAnalyse(method, psiMethod);
@@ -72,5 +66,5 @@ public class ParseMethod {
             methodParameters.add(newMetodParameter);
         }
         method.setParameters(methodParameters);
-    }
+    }*/
 }

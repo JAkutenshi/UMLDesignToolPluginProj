@@ -4,18 +4,14 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.java.stubs.JavaFieldStubElementType;
-import com.intellij.psi.impl.java.stubs.JavaStubElementType;
-import com.intellij.psi.impl.java.stubs.PsiJavaFileStub;
+import com.intellij.psi.PsiClass;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
-import com.intellij.psi.stubs.StubElement;
-import com.intellij.psi.stubs.StubTree;
-import com.jakutenshi.projects.umlplugin.container.elements.Field;
-import com.jakutenshi.projects.umlplugin.container.elements.Method;
-import com.sun.org.apache.bcel.internal.classfile.JavaClass;
+import com.jakutenshi.projects.umlplugin.container.entities.Enum;
+import com.jakutenshi.projects.umlplugin.parser.ParseEnum;
 
 /**
  * Created by JAkutenshi on 25.05.2016.
@@ -51,34 +47,22 @@ public class GenDiagramAction extends AnAction {
 
     private void parseJavaFile(PsiElement[] elements) {
         if (elements == null) return;
-        Method method;
-        Field field;
+
 
         for (PsiElement element : elements) {
             if (element instanceof PsiClass) {
                 PsiClassImpl psiClass = (PsiClassImpl) element;
 
                 if(psiClass.isInterface()){
-                    System.out.println("!!====");
+                    //ToDo
+                } else if (psiClass.isEnum()) {
+                    Enum enumClass = ParseEnum.parse(psiClass);
+                    System.out.println("UML==============");
+                    System.out.println(enumClass.toUML());
+                    System.out.println("Code=============");
+                    System.out.println(enumClass.toCode());
                 }
 
-
-                PsiIdentifier psiIdentifier = psiClass.getNameIdentifier();
-                //System.out.println(psiIdentifier.getText());
-
-                System.out.println("ClassName : " + psiClass.getName());
-                System.out.println("Fields:");
-                PsiField[] fields = psiClass.getFields();
-                for (PsiField psiField : fields) {
-                    field = ParseField.parseField(psiField);
-                    System.out.println(field.toString());
-                }
-                System.out.println("Methods:");
-                PsiMethod[] methods = psiClass.getMethods();
-                for (PsiMethod psiMethod : methods) {
-                    method = ParseMethod.createMethod(psiMethod);
-                    System.out.println(method.toString());
-                }
             }
 
             parseJavaFile(element.getChildren());
