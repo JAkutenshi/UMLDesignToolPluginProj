@@ -3,10 +3,11 @@ package com.jakutenshi.projects.umlplugin.container.entities;
 
 
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Scope;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
@@ -16,7 +17,6 @@ public class Class extends UMLEntity{
     private ArrayList<Method> methods = new ArrayList<>();
     private boolean isException = false;
 
-    //TODO ABSTRACT CLASS
     //TODO GENERIC CLASS
 
     @Override
@@ -51,8 +51,28 @@ public class Class extends UMLEntity{
         return null;
     }
 
-    public Class(String name, String packagePath, Scope scope) {
-        super(name, packagePath, scope);
+    public Class(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+        super(name, packagePath, keywords);
+        this.fields = fields;
+        this.methods = methods;
+        this.isException = isException;
+    }
+
+    public Class(String name, String packagePath, ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+        super(name, packagePath);
+        this.fields = fields;
+        this.methods = methods;
+        this.isException = isException;
+    }
+
+    public Class(ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+        this.fields = fields;
+        this.methods = methods;
+        this.isException = isException;
+    }
+
+    public Class(String name, String packagePath, HashSet<Keyword> keywords) {
+        super(name, packagePath, keywords);
     }
 
     public Class(String name, String packagePath) {

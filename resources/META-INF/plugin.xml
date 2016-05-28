@@ -37,13 +37,6 @@
 
     <actions>
         <!-- Add your actions here -->
-        <action class="com.jakutenshi.projects.umlplugin.actions.OpenFileAction"
-                id="UMLPlugin.OpenFile"
-                text="Open file info"
-                description="Show info about file into Tool Window"
-                icon="/icons/open-file.png">
-	        <add-to-group group-id="NavBarToolBar"></add-to-group>
-        </action>
         <action class="com.jakutenshi.projects.umlplugin.actions.GenDiagramAction"
                 id="UMLPlugin.GenDiagram"
                 text="Generate diagram"
@@ -71,8 +64,6 @@
         </action>
 
 		<group id="UMLPlugin.UI.Toolbar">
-            <reference ref="UMLPlugin.OpenFile"/>
-            <separator/>
             <reference ref="UMLPlugin.GenDiagram"/>
             <separator/>
             <reference ref="UMLPlugin.ExportXML"/>
@@ -86,8 +77,6 @@
                popup="true"
                description="UML Plugin Tools">
             <add-to-group group-id="ToolsMenu"/>
-            <reference ref="UMLPlugin.OpenFile"/>
-            <separator/>
             <reference ref="UMLPlugin.GenDiagram"/>
             <separator/>
             <reference ref="UMLPlugin.ExportXML"/>

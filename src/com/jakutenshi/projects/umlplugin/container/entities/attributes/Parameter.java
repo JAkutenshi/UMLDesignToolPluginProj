@@ -1,11 +1,13 @@
 package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 
+import java.util.HashSet;
+
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Parameter extends EnumField {
+    private HashSet<Keyword> keywords;
     private String type;
-    private boolean isFinal = false;
 
     @Override
     public String toUML() {
@@ -13,7 +15,7 @@ public class Parameter extends EnumField {
         builder.append(super.toUML())
                 .append(" : ")
                 .append(type);
-        if(isFinal)
+        if(keywords.contains(Keyword.FINAL))
             builder.append(" {readOnly}");
         return builder.toString();
     }
@@ -21,7 +23,7 @@ public class Parameter extends EnumField {
     @Override
     public String toCode() {
         StringBuilder builder = new StringBuilder();
-        if (isFinal)
+        if (keywords.contains(Keyword.FINAL))
             builder.append("final ");
         builder.append(type)
                 .append(" ")
@@ -29,15 +31,10 @@ public class Parameter extends EnumField {
         return builder.toString();
     }
 
-    public Parameter(String name, String type, boolean isFinal) {
+    public Parameter(String name, HashSet<Keyword> keywords, String type) {
         super(name);
+        this.keywords = keywords;
         this.type = type;
-        this.isFinal = isFinal;
-    }
-
-    public Parameter(String type, boolean isFinal) {
-        this.type = type;
-        this.isFinal = isFinal;
     }
 
     public Parameter(String name, String type) {
@@ -45,11 +42,28 @@ public class Parameter extends EnumField {
         this.type = type;
     }
 
-    public Parameter(String name) {
-        super(name);
+    public Parameter(HashSet<Keyword> keywords, String type) {
+        this.keywords = keywords;
+        this.type = type;
     }
 
     public Parameter() {
+
     }
 
+    public HashSet<Keyword> getKeywords() {
+        return keywords;
+    }
+
+    public void setKeywords(HashSet<Keyword> keywords) {
+        this.keywords = keywords;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

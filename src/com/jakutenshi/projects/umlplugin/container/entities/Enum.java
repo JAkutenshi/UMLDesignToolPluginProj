@@ -2,9 +2,10 @@ package com.jakutenshi.projects.umlplugin.container.entities;
 
 
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.EnumField;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Scope;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
@@ -46,10 +47,22 @@ public class Enum extends UMLEntity {
         return builder.toString();
     }
 
+    public Enum(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<EnumField> enumFields) {
+        super(name, packagePath, keywords);
+        this.enumFields = enumFields;
+    }
 
+    public Enum(String name, String packagePath, ArrayList<EnumField> enumFields) {
+        super(name, packagePath);
+        this.enumFields = enumFields;
+    }
 
-    public Enum(String name, String packagePath, Scope scope) {
-        super(name, packagePath, scope);
+    public Enum(ArrayList<EnumField> enumFields) {
+        this.enumFields = enumFields;
+    }
+
+    public Enum(String name, String packagePath, HashSet<Keyword> keywords) {
+        super(name, packagePath, keywords);
     }
 
     public Enum(String name, String packagePath) {
@@ -70,5 +83,6 @@ public class Enum extends UMLEntity {
     public void addEnumField(EnumField enumField) {
         enumFields.add(enumField);
     }
+
 
 }

@@ -1,51 +1,43 @@
 package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 
+import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Generatable;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public enum Scope implements Generatable {
-    PRIVATE {
+public enum Keyword implements Generatable {
+    FINAL {
         @Override
         public String toUML() {
-            return "-";
+            return " {readOnly}";
         }
 
         @Override
         public String toCode() {
-            return "private";
+            return "final";
         }
     },
-    PROTECTED {
+    ABSTRACT {
         @Override
         public String toUML() {
-            return "#";
+            return "";
         }
 
         @Override
         public String toCode() {
-            return "protected";
+            return "abstract";
         }
     },
-    PACKAGE {
-        @Override
-        public String toUML() { return "~"; }
-
-        @Override
-        public String toCode() {
-            return "package";
-        }
-    },
-    PUBLIC {
+    STATIC {
         @Override
         public String toUML() {
-            return "+";
+            return "";
         }
 
         @Override
         public String toCode() {
-            return "public";
+            return "static";
         }
     }
 }

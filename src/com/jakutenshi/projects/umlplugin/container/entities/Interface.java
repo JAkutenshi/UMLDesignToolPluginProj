@@ -1,10 +1,11 @@
 package com.jakutenshi.projects.umlplugin.container.entities;
 
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Scope;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Signature;
 
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
@@ -35,8 +36,22 @@ public class Interface extends UMLEntity {
         return null;
     }
 
-    public Interface(String name, String packagePath, Scope scope) {
-        super(name, packagePath, scope);
+    public Interface(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<Signature> signatures) {
+        super(name, packagePath, keywords);
+        this.signatures = signatures;
+    }
+
+    public Interface(String name, String packagePath, ArrayList<Signature> signatures) {
+        super(name, packagePath);
+        this.signatures = signatures;
+    }
+
+    public Interface(ArrayList<Signature> signatures) {
+        this.signatures = signatures;
+    }
+
+    public Interface(String name, String packagePath, HashSet<Keyword> keywords) {
+        super(name, packagePath, keywords);
     }
 
     public Interface(String name, String packagePath) {

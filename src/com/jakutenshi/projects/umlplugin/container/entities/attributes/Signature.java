@@ -4,6 +4,7 @@ import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Generatable;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
@@ -12,25 +13,26 @@ public class Signature extends UMLElement implements Generatable {
     private String returnType;
     private String name;
     private ArrayList<Parameter> parameters = new ArrayList<>();
-    private boolean isAbstract = false;
-    private boolean isFinal = false;
-    private boolean isStatic = false;
+    private HashSet<Keyword> keywords;
 
     @Override
     public String toUML() {
         StringBuilder builder = new StringBuilder();
-        builder.append(returnType)
-                .append(" ")
-                .append(name)
-                .append("(");
+        builder.append(name)
+                .append(" (");
         for (int i = 0; i < parameters.size(); i++) {
             builder.append(parameters.get(i).toCode());
             if (i != parameters.size() - 1) {
                 builder.append(", ");
             }
         }
-        builder.append(");");
-        if(isFinal)
+        builder.append(")");
+//случай конструктора
+        if (returnType != null) {
+            builder.append(" : ")
+                    .append(getReturnType());
+        }
+        if(keywords.contains(Keyword.FINAL))
             builder.append(" {readOnly}");
         return builder.toString();
     }
@@ -38,15 +40,18 @@ public class Signature extends UMLElement implements Generatable {
     @Override
     public String toCode() {
         StringBuilder builder = new StringBuilder();
-        if (isAbstract)
+        if (keywords.contains(Keyword.ABSTRACT))
             builder.append("abstract ");
-        if (isFinal)
+        if (keywords.contains(Keyword.FINAL))
             builder.append("final ");
-        if (isStatic)
+        if (keywords.contains(Keyword.STATIC))
             builder.append("static ");
-        builder.append(returnType)
-                .append(" ")
-                .append(name)
+//случай конструктора
+        if (returnType != null) {
+            builder.append(returnType)
+                    .append(" ");
+        }
+            builder.append(name)
                 .append("(");
         for (int i = 0; i < parameters.size(); i++) {
             builder.append(parameters.get(i).toCode());
@@ -58,10 +63,11 @@ public class Signature extends UMLElement implements Generatable {
         return builder.toString();
     }
 
-    public Signature(String returnType, String name, ArrayList<Parameter> parameters) {
+    public Signature(String returnType, String name, ArrayList<Parameter> parameters, HashSet<Keyword> keywords) {
         this.returnType = returnType;
         this.name = name;
         this.parameters = parameters;
+        this.keywords = keywords;
     }
 
     public Signature(String returnType, String name) {
@@ -100,31 +106,11 @@ public class Signature extends UMLElement implements Generatable {
         parameters.add(parameter);
     }
 
-    public boolean isAbstract() {
-        return isAbstract;
+    public HashSet<Keyword> getKeywords() {
+        return keywords;
     }
 
-    public void setAbstract(boolean anAbstract) {
-        isAbstract = anAbstract;
-        if (isFinal && isAbstract)
-            isFinal = false;
-    }
-
-    public boolean isFinal() {
-        return isFinal;
-    }
-
-    public void setFinal(boolean aFinal) {
-        isFinal = aFinal;
-        if (isAbstract && isFinal)
-            isAbstract = false;
-    }
-
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
+    public void setKeywords(HashSet<Keyword> keywords) {
+        this.keywords = keywords;
     }
 }

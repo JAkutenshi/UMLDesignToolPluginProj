@@ -10,8 +10,14 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
+import com.jakutenshi.projects.umlplugin.container.DiagramContainer;
+import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.Enum;
-import com.jakutenshi.projects.umlplugin.parser.ParseEnum;
+import com.jakutenshi.projects.umlplugin.container.entities.Interface;
+import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
+import com.jakutenshi.projects.umlplugin.parser.ClassParser;
+import com.jakutenshi.projects.umlplugin.parser.InterfaceParser;
+import com.jakutenshi.projects.umlplugin.parser.EnumParser;
 
 /**
  * Created by JAkutenshi on 25.05.2016.
@@ -20,12 +26,16 @@ public class GenDiagramAction extends AnAction {
 
     private Project project;
     private PsiManager psiManager;
+    private DiagramContainer container = new DiagramContainer();
+
+
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
         project = anActionEvent.getProject();
         psiManager = PsiManager.getInstance(project);
         VirtualFile projectVirtualFile = project.getBaseDir();
         parseForJavaFiles(projectVirtualFile.getChildren());
+        System.out.println(container.toString());
     }
 
     private void parseForJavaFiles(VirtualFile[] virtualFiles) {
@@ -35,8 +45,7 @@ public class GenDiagramAction extends AnAction {
         for (VirtualFile virtualFile : virtualFiles) {
             psiFile = psiManager.findFile(virtualFile);
             if (psiFile instanceof PsiJavaFileImpl) {
-                //Find all Java files
-                System.out.println(virtualFile.getPath());
+//Find all Java files
                 parseJavaFile(psiFile.getChildren());
             } else {
                 parseForJavaFiles(virtualFile.getChildren());
@@ -48,23 +57,26 @@ public class GenDiagramAction extends AnAction {
     private void parseJavaFile(PsiElement[] elements) {
         if (elements == null) return;
 
+        UMLEntity entity;
+        Enum enumClass;
+        EnumParser enumParser = new EnumParser();
+        Interface anInterface;
+        InterfaceParser interfaceParser = new InterfaceParser();
+        Class aClass;
+        ClassParser classParser = new ClassParser();
 
         for (PsiElement element : elements) {
             if (element instanceof PsiClass) {
                 PsiClassImpl psiClass = (PsiClassImpl) element;
-
                 if(psiClass.isInterface()){
-                    //ToDo
+                    entity = (UMLEntity) interfaceParser.parse(psiClass);
                 } else if (psiClass.isEnum()) {
-                    Enum enumClass = ParseEnum.parse(psiClass);
-                    System.out.println("UML==============");
-                    System.out.println(enumClass.toUML());
-                    System.out.println("Code=============");
-                    System.out.println(enumClass.toCode());
+                    entity = (UMLEntity) enumParser.parse(psiClass);
+                } else {
+                    entity = (UMLEntity) classParser.parse(psiClass);
                 }
-
+                container.addUMLEntity(entity);
             }
-
             parseJavaFile(element.getChildren());
         }
     }

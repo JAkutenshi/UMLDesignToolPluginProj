@@ -1,11 +1,12 @@
 package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 
+import java.util.HashSet;
+
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Field extends Parameter {
     private Scope scope = Scope.PACKAGE;
-    private boolean isStatic = false;
 
     @Override
     public String toUML() {
@@ -21,48 +22,14 @@ public class Field extends Parameter {
         StringBuilder builder = new StringBuilder();
         builder.append(scope.toCode())
                 .append(" ");
-        if (isStatic)
+        if (getKeywords().contains(Keyword.STATIC))
             builder.append("static ");
         builder.append(super.toCode());
         return builder.toString();
     }
 
-    public Field(String name, String type, boolean isFinal, Scope scope, boolean isStatic) {
-        super(name, type, isFinal);
-        this.scope = scope;
-        this.isStatic = isStatic;
-    }
-
-    public Field(String type, boolean isFinal, Scope scope, boolean isStatic) {
-        super(type, isFinal);
-        this.scope = scope;
-        this.isStatic = isStatic;
-    }
-
-    public Field(String name, String type, Scope scope, boolean isStatic) {
-        super(name, type);
-        this.scope = scope;
-        this.isStatic = isStatic;
-    }
-
-    public Field(String name, Scope scope, boolean isStatic) {
-        super(name);
-        this.scope = scope;
-        this.isStatic = isStatic;
-    }
-
-    public Field(Scope scope, boolean isStatic) {
-        this.scope = scope;
-        this.isStatic = isStatic;
-    }
-
-    public Field(String name, String type, boolean isFinal, Scope scope) {
-        super(name, type, isFinal);
-        this.scope = scope;
-    }
-
-    public Field(String type, boolean isFinal, Scope scope) {
-        super(type, isFinal);
+    public Field(String name, HashSet<Keyword> keywords, String type, Scope scope) {
+        super(name, keywords, type);
         this.scope = scope;
     }
 
@@ -71,8 +38,8 @@ public class Field extends Parameter {
         this.scope = scope;
     }
 
-    public Field(String name, Scope scope) {
-        super(name);
+    public Field(HashSet<Keyword> keywords, String type, Scope scope) {
+        super(keywords, type);
         this.scope = scope;
     }
 
@@ -80,20 +47,16 @@ public class Field extends Parameter {
         this.scope = scope;
     }
 
-    public Field(String name, String type, boolean isFinal) {
-        super(name, type, isFinal);
-    }
-
-    public Field(String type, boolean isFinal) {
-        super(type, isFinal);
+    public Field(String name, HashSet<Keyword> keywords, String type) {
+        super(name, keywords, type);
     }
 
     public Field(String name, String type) {
         super(name, type);
     }
 
-    public Field(String name) {
-        super(name);
+    public Field(HashSet<Keyword> keywords, String type) {
+        super(keywords, type);
     }
 
     public Field() {
@@ -105,13 +68,5 @@ public class Field extends Parameter {
 
     public void setScope(Scope scope) {
         this.scope = scope;
-    }
-
-    public boolean isStatic() {
-        return isStatic;
-    }
-
-    public void setStatic(boolean aStatic) {
-        isStatic = aStatic;
     }
 }
