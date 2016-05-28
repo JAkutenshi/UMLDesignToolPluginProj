@@ -42,12 +42,14 @@
                 text="Open file info"
                 description="Show info about file into Tool Window"
                 icon="/icons/open-file.png">
+	        <add-to-group group-id="NavBarToolBar"></add-to-group>
         </action>
         <action class="com.jakutenshi.projects.umlplugin.actions.GenDiagramAction"
                 id="UMLPlugin.GenDiagram"
                 text="Generate diagram"
                 description="Generate class-diagram by your code"
                 icon="/icons/gen-diagram.png">
+            <add-to-group group-id="NavBarToolBar"></add-to-group>
         </action>
         <action class="com.jakutenshi.projects.umlplugin.actions.ExportXMLAction"
                 id="UMLPlugin.ExportXML"

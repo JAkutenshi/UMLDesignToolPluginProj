@@ -1,48 +1,48 @@
 package com.jakutenshi.projects.umlplugin.container.elements;
 
-import com.jakutenshi.projects.umlplugin.container.elements.MetodsSugnature;
-
-import java.util.ArrayList;
-
 /**
  * Created by JAkutenshi on 25.05.2016.
  */
 public abstract class UMLElement {
-    private ElementType Type;
-    private String Path;
-    private String Name;
-    private ArrayList<MetodsSugnature> Methods;
+    private final Stereotype type;
+    private String packagePath;
+    private String name;
+    private String key;
 
-    public UMLElement(String path, String name) {
-        Path = path;
-        Name = name;
+    public UMLElement(Stereotype aType, String aPackage, String aName) {
+        type = aType;
+        packagePath = aPackage;
+        name = aName;
+        computeKey();
     }
 
-    public ElementType getType() {
-        return Type;
+    public Stereotype getType() {
+        return type;
     }
 
-    public String getPath() {
-        return Path;
+    public String getPackage() {
+        return packagePath;
     }
 
-    public void setPath(String path) {
-        Path = path;
+    public void setPackage(String aPackage) {
+        packagePath = aPackage;
+        computeKey();
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String name) {
-        Name = name;
+    public void setName(String aName) {
+        name = aName;
+        computeKey();
     }
 
-    @Override
-    public String toString() {
-        return "UMLElement{" +
-                "Path='" + Path + '\'' +
-                ", Name='" + Name + '\'' +
-                '}';
+    public String getKey() {
+        return key;
+    }
+
+    private void computeKey() {
+        key = packagePath + '.' + name;
     }
 }

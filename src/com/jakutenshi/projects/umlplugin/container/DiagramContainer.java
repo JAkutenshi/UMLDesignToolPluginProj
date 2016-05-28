@@ -1,5 +1,6 @@
 package com.jakutenshi.projects.umlplugin.container;
 
+import com.jakutenshi.projects.umlplugin.actions.GenDiagramAction;
 import com.jakutenshi.projects.umlplugin.container.elements.UMLElement;
 
 import java.util.HashMap;
@@ -15,7 +16,7 @@ public class DiagramContainer {
     }
 
     public void addUMLElement(UMLElement element) {
-        elementsContainer.put(element.getPath(), element);
+        elementsContainer.put(element.getKey(), element);
     }
 
     @Override
