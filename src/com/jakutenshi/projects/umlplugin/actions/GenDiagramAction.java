@@ -7,6 +7,7 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.psi.*;
 import com.intellij.psi.impl.java.stubs.JavaFieldStubElementType;
+import com.intellij.psi.impl.java.stubs.JavaStubElementType;
 import com.intellij.psi.impl.java.stubs.PsiJavaFileStub;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
@@ -14,6 +15,7 @@ import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubTree;
 import com.jakutenshi.projects.umlplugin.container.elements.Field;
 import com.jakutenshi.projects.umlplugin.container.elements.Method;
+import com.sun.org.apache.bcel.internal.classfile.JavaClass;
 
 /**
  * Created by JAkutenshi on 25.05.2016.
@@ -55,6 +57,15 @@ public class GenDiagramAction extends AnAction {
         for (PsiElement element : elements) {
             if (element instanceof PsiClass) {
                 PsiClassImpl psiClass = (PsiClassImpl) element;
+
+                if(psiClass.isInterface()){
+                    System.out.println("!!====");
+                }
+
+
+                PsiIdentifier psiIdentifier = psiClass.getNameIdentifier();
+                //System.out.println(psiIdentifier.getText());
+
                 System.out.println("ClassName : " + psiClass.getName());
                 System.out.println("Fields:");
                 PsiField[] fields = psiClass.getFields();

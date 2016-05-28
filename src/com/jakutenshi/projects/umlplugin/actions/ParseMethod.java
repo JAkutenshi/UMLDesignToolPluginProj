@@ -20,7 +20,12 @@ public class ParseMethod {
         //добавляем входные параметры
         parametersAnalyse(method, psiMethod);
         //возвращаемое значение
-        method.setReturnType(psiMethod.getReturnType().getPresentableText());
+        if (psiMethod.getReturnType() != null) {
+            method.setReturnType(psiMethod.getReturnType().getPresentableText());
+        } else {
+            //constructor
+            method.setReturnType(null);
+        }
 
         return method;
     }

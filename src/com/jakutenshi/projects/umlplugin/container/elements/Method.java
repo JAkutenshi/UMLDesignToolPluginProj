@@ -92,8 +92,12 @@ public class Method {
                 builder.append(", ");
             }
         }
-        builder.append(") : ")
-                .append(returnType);
+        builder.append(")");
+        //для конструкторов
+        if (returnType != null) {
+            builder.append(" : ")
+                    .append(returnType);
+        }
         if (isFinal) {
             builder.append(" {readOnly}");
         }
