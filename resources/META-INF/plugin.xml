@@ -42,7 +42,7 @@
                 text="Generate diagram"
                 description="Generate class-diagram by your code"
                 icon="/icons/gen-diagram.png">
-            <add-to-group group-id="NavBarToolBar"></add-to-group>
+            <add-to-group group-id="NavBarToolBar"/>
         </action>
         <action class="com.jakutenshi.projects.umlplugin.actions.ExportXMLAction"
                 id="UMLPlugin.ExportXML"

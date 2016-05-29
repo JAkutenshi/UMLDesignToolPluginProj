@@ -26,8 +26,6 @@ public class GenDiagramAction extends AnAction {
 
     private Project project;
     private PsiManager psiManager;
-    private DiagramContainer container = new DiagramContainer();
-
 
     @Override
     public void actionPerformed(AnActionEvent anActionEvent) {
@@ -35,7 +33,7 @@ public class GenDiagramAction extends AnAction {
         psiManager = PsiManager.getInstance(project);
         VirtualFile projectVirtualFile = project.getBaseDir();
         parseForJavaFiles(projectVirtualFile.getChildren());
-        System.out.println(container.toString());
+        //System.out.println(DiagramContainer.getInstance().toString());
     }
 
     private void parseForJavaFiles(VirtualFile[] virtualFiles) {
@@ -66,7 +64,7 @@ public class GenDiagramAction extends AnAction {
         ClassParser classParser = new ClassParser();
 
         for (PsiElement element : elements) {
-            if (element instanceof PsiClass) {
+            if (element instanceof PsiClassImpl) {
                 PsiClassImpl psiClass = (PsiClassImpl) element;
                 if(psiClass.isInterface()){
                     entity = (UMLEntity) interfaceParser.parse(psiClass);
@@ -75,7 +73,7 @@ public class GenDiagramAction extends AnAction {
                 } else {
                     entity = (UMLEntity) classParser.parse(psiClass);
                 }
-                container.addUMLEntity(entity);
+                DiagramContainer.getInstance().addUMLEntity(entity);
             }
             parseJavaFile(element.getChildren());
         }

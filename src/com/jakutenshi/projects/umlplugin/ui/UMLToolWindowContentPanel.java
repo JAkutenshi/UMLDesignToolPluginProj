@@ -7,6 +7,7 @@ import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.ScrollPaneFactory;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by JAkutenshi on 25.05.2016.
@@ -14,17 +15,19 @@ import javax.swing.*;
 public class UMLToolWindowContentPanel extends SimpleToolWindowPanel {
     private final ActionManager actionManager;
     private final ActionToolbar actionToolbar;
+    private UMLDiagramPanel drawingPanel;
 
     public UMLToolWindowContentPanel() {
         super(true, true);
-
         actionManager = ActionManager.getInstance();
         actionToolbar = actionManager.createActionToolbar(
                 "toolbar",
                 (ActionGroup) actionManager.getAction("UMLPlugin.UI.Toolbar"),
                 true);
         setToolbar(actionToolbar.getComponent());
-        setContent(ScrollPaneFactory.createScrollPane(new JPanel()));
+
+        drawingPanel =  new UMLDiagramPanel();
+        setContent(drawingPanel);
     }
 
 }

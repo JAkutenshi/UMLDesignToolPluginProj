@@ -21,7 +21,7 @@ public class UMLPluginToolWindowFactory implements ToolWindowFactory {
         panel = new UMLToolWindowContentPanel();
         UMLPluginToolWindow = toolWindow;
         ContentFactory contentFactory = ContentFactory.SERVICE.getInstance();
-        Content content = contentFactory.createContent(panel, "", false);
+        Content content = contentFactory.createContent(panel, "", true);
         toolWindow.getContentManager().addContent(content);
     }
 }

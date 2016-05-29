@@ -21,7 +21,7 @@ public class Signature extends UMLElement implements Generatable {
         builder.append(name)
                 .append(" (");
         for (int i = 0; i < parameters.size(); i++) {
-            builder.append(parameters.get(i).toCode());
+            builder.append(parameters.get(i).toUML());
             if (i != parameters.size() - 1) {
                 builder.append(", ");
             }

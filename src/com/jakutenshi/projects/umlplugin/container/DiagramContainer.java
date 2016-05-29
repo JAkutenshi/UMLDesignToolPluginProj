@@ -8,10 +8,23 @@ import java.util.HashMap;
  * Created by JAkutenshi on 28.05.2016.
  */
 public class DiagramContainer {
-    HashMap<String, UMLEntity> umlEntities = new HashMap<>();
+    HashMap<String, UMLEntity> umlEntities;
+    private static final DiagramContainer instance = new DiagramContainer();
+
+    private DiagramContainer() {
+        umlEntities = new HashMap<>();
+    }
+
+    public static DiagramContainer getInstance() {
+        return instance;
+    }
 
     public void addUMLEntity(UMLEntity entity) {
         umlEntities.put(entity.getPackagePath(), entity);
+    }
+
+    public HashMap<String, UMLEntity> getUmlEntities() {
+        return umlEntities;
     }
 
     @Override

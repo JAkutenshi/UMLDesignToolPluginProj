@@ -1,9 +1,7 @@
 package com.jakutenshi.projects.umlplugin.parser;
 
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiMethod;
+import com.intellij.psi.*;
+import com.intellij.psi.impl.source.PsiClassImpl;
 import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
@@ -16,23 +14,45 @@ public class ClassParser implements Parser {
     @Override
     public UMLElement parse(PsiElement psiElement) {
         Class aClass = new Class();
-        PsiClass psiClass = (PsiClass) psiElement;
-        //имя
+        PsiClassImpl psiClass = (PsiClassImpl) psiElement;
+
+//!generic test
+        System.out.println(psiClass.getQualifiedName());
+
+        PsiTypeParameter[] psiTypeParameters = psiClass.getTypeParameters();
+        if (psiTypeParameters != null) {
+            for (PsiTypeParameter psiTypeParameter : psiTypeParameters) {
+                System.out.println(psiTypeParameter.getName());
+                PsiClassType[] c =  psiTypeParameter.getExtendsListTypes();
+                if (c != null) {
+                    for (PsiClassType t : c) {
+                        System.out.println('\t' + t.getCanonicalText());
+
+                    }
+                }
+            }
+        }
+
+//!generic test
+
+//имя
         aClass.setName(psiClass.getName());
-        //пакет
+//Является ли исключением
+//TODO EXCEPTION
+//пакет
         aClass.setPackagePath(psiClass.getQualifiedName());
-        //модификаторы
+//модификаторы
         ModifierParser modifierParser = new ModifierParser();
         modifierParser.parse(psiClass.getModifierList());
         aClass.setScope(modifierParser.getParseScope());
         aClass.setKeywords(modifierParser.getParseKeywords());
-        //поля
+//поля
         FieldParser fieldParser = new FieldParser();
         PsiField[] fields = psiClass.getFields();
         for (PsiField psiField : fields) {
             aClass.addField((Field) fieldParser.parse(psiField));
         }
-        //методы
+//методы
         MethodParser methodParser = new MethodParser();
         PsiMethod[] psiMethods = psiClass.getMethods();
         for (PsiMethod psiMethod : psiMethods) {
