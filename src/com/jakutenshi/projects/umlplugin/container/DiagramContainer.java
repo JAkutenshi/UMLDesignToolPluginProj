@@ -31,9 +31,14 @@ public class DiagramContainer {
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (String key : umlEntities.keySet()) {
-            builder.append("====================\n")
+            builder.append(umlEntities.get(key).getPackagePath())
+                    .append('\n');
+
+        }
+        for (String key : umlEntities.keySet()) {
+            builder.append("======================\n")
                     .append(umlEntities.get(key).toUML())
-                    .append("\n====================\n");
+                    .append("\n======================\n");
 
         }
         return builder.toString();

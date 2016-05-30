@@ -74,27 +74,6 @@ public abstract class UMLDrawer {
                     Font.ITALIC,
                     DEFAULT_LINE_FONT_SIZE));
         }
-
-        /*if (entity instanceof Class) {
-            Class aClass = (Class) entity;
-//заголовок
-            drawnTitle = aClass.titleToUML();
-//поля
-            drawableFields = new LinkedList<>();
-            for (Field field : aClass.getFields()) {
-                drawableFields.addFirst(field.toUML());
-            }
-//методы
-            drawableMethods = new LinkedList<>();
-            for (Method method : aClass.getMethods()) {
-                drawableMethods.addFirst(method.toUML());
-            }
-        } else if (entity instanceof Interface) {
-            Interface anInterface = (Interface) entity;
-//заголовок
-        } else {
-
-        }*/
     }
 
     /**

@@ -6,7 +6,7 @@ import java.util.HashSet;
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Parameter extends EnumField {
-    private HashSet<Keyword> keywords;
+    private HashSet<Keyword> keywords = getKeywords();
     private String type;
 
     @Override

@@ -1,9 +1,6 @@
 package com.jakutenshi.projects.umlplugin.parser;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiField;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiParameter;
+import com.intellij.psi.*;
 import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Parameter;
 
@@ -13,15 +10,16 @@ import com.jakutenshi.projects.umlplugin.container.entities.attributes.Parameter
 public class ParameterParser implements Parser{
     @Override
     public UMLElement parse(PsiElement psiElement) {
-        PsiParameter psiField = (PsiParameter) psiElement;
         Parameter parameter = new Parameter();
+
+        PsiParameter psiParameter = (PsiParameter) psiElement;
 //имя
-        parameter.setName(psiField.getName());
+        parameter.setName(psiParameter.getName());
 //тип
-        parameter.setType(psiField.getType().getPresentableText());
+        parameter.setType(psiParameter.getType().getPresentableText());
 //ключевые слова
         ModifierParser modifierParser = new ModifierParser();
-        modifierParser.parse(psiField.getModifierList());
+        modifierParser.parse(psiParameter.getModifierList());
         parameter.setKeywords(modifierParser.getParseKeywords());
 
         return parameter;

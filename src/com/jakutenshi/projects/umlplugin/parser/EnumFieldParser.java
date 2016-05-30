@@ -11,10 +11,7 @@ import com.jakutenshi.projects.umlplugin.container.entities.attributes.EnumField
 public class EnumFieldParser implements Parser{
     @Override
     public UMLElement parse(PsiElement psiElement) {
-        EnumField enumField = new EnumField();
         PsiField psiField = (PsiField) psiElement;
-        //имя
-        enumField.setName(psiField.getName());
-        return enumField;
+        return new EnumField(psiField.getName());
     }
 }

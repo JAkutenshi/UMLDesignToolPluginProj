@@ -6,6 +6,7 @@ import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
@@ -16,29 +17,6 @@ public class ClassParser implements Parser {
         Class aClass = new Class();
         PsiClassImpl psiClass = (PsiClassImpl) psiElement;
 
-//!generic test
-        System.out.println(psiClass.getQualifiedName());
-
-        PsiTypeParameter[] psiTypeParameters = psiClass.getTypeParameters();
-        if (psiTypeParameters != null) {
-            for (PsiTypeParameter psiTypeParameter : psiTypeParameters) {
-                System.out.println(psiTypeParameter.getName());
-                PsiClassType[] c =  psiTypeParameter.getExtendsListTypes();
-                if (c != null) {
-                    for (PsiClassType t : c) {
-                        System.out.println('\t' + t.getCanonicalText());
-
-                    }
-                }
-            }
-        }
-
-//!generic test
-
-//имя
-        aClass.setName(psiClass.getName());
-//Является ли исключением
-//TODO EXCEPTION
 //пакет
         aClass.setPackagePath(psiClass.getQualifiedName());
 //модификаторы
@@ -46,6 +24,18 @@ public class ClassParser implements Parser {
         modifierParser.parse(psiClass.getModifierList());
         aClass.setScope(modifierParser.getParseScope());
         aClass.setKeywords(modifierParser.getParseKeywords());
+//имя
+        aClass.setName(psiClass.getName());
+//генерик-типы
+        PsiTypeParameter[] psiTypeParameters = psiClass.getTypeParameters();
+        if (psiTypeParameters != null) {
+            TypeParameterParser typeParameterParser = new TypeParameterParser();
+            for (PsiTypeParameter psiTypeParameter : psiTypeParameters) {
+                aClass.addTypeParameter((TypeParameter) typeParameterParser.parse(psiTypeParameter));
+            }
+        }
+//Является ли исключением
+//TODO EXCEPTION
 //поля
         FieldParser fieldParser = new FieldParser();
         PsiField[] fields = psiClass.getFields();

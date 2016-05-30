@@ -2,7 +2,7 @@ package com.jakutenshi.projects.umlplugin.test;
 
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Signature;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;
@@ -62,7 +62,7 @@ public class InterfaceDrawer extends UMLDrawer {
         Map fontAttributes;
         int maxLength = getDrawnTitle().getLine().length(); //длина строки для вычисления ширины
 
-        for (Signature signature : anInterface.getSignatures()) {
+        for (Method signature : anInterface.getSignatures()) {
             signatureString = signature.toUML();
             newDrawnLine = new DrawnLine(signatureString);
             if (signature.getKeywords().contains("static")) {

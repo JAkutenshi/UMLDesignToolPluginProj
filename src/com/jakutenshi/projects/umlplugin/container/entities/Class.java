@@ -5,6 +5,7 @@ package com.jakutenshi.projects.umlplugin.container.entities;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.HashSet;
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Class extends UMLEntity{
+    private ArrayList<TypeParameter> typeParameters = new ArrayList<>();
     private ArrayList<Field> fields = new ArrayList<>();
     private ArrayList<Method> methods = new ArrayList<>();
     private boolean isException = false;
@@ -22,6 +24,14 @@ public class Class extends UMLEntity{
     @Override
     public String titleToUML() {
         StringBuilder builder = new StringBuilder();
+        if (typeParameters.size() != 0) {
+            for (TypeParameter typeParameter : typeParameters) {
+                builder.append(typeParameter.toUML())
+                        .append('\n');
+            }
+            builder.append("---------------------\n");
+        }
+
         if (isException)
             builder.append("<<exception>> ");
         builder.append(getName());
@@ -32,12 +42,12 @@ public class Class extends UMLEntity{
     public String toUML() {
         StringBuilder builder = new StringBuilder();
         builder.append(titleToUML())
-                .append("\n---------------------\n");
+                .append("\n_____________________\n");
         for (Field field : fields) {
             builder.append(field.toUML())
                     .append("\n");
         }
-        builder.append("---------------------\n");
+        builder.append("_____________________\n");
         for (Method method : methods) {
             builder.append(method.toUML())
                     .append("\n");
@@ -112,5 +122,17 @@ public class Class extends UMLEntity{
 
     public void setException(boolean exception) {
         isException = exception;
+    }
+
+    public ArrayList<TypeParameter> getTypeParameters() {
+        return typeParameters;
+    }
+
+    public void setTypeParameters(ArrayList<TypeParameter> typeParameters) {
+        this.typeParameters = typeParameters;
+    }
+
+    public void addTypeParameter(TypeParameter typeParameter) {
+        typeParameters.add(typeParameter);
     }
 }

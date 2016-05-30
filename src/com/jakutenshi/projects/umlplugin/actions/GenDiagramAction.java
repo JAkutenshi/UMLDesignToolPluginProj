@@ -33,7 +33,9 @@ public class GenDiagramAction extends AnAction {
         psiManager = PsiManager.getInstance(project);
         VirtualFile projectVirtualFile = project.getBaseDir();
         parseForJavaFiles(projectVirtualFile.getChildren());
-        //System.out.println(DiagramContainer.getInstance().toString());
+        System.out.println();
+        DiagramContainer container = DiagramContainer.getInstance();
+        System.out.println(container.toString());
     }
 
     private void parseForJavaFiles(VirtualFile[] virtualFiles) {
