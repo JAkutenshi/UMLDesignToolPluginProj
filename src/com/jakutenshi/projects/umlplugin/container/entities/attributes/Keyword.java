@@ -1,6 +1,5 @@
 package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 
-import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Generatable;
 
 /**

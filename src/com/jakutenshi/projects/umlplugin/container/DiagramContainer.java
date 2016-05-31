@@ -27,6 +27,10 @@ public class DiagramContainer {
         return umlEntities;
     }
 
+    public boolean containsKey(String key) {
+        return  umlEntities.containsKey(key);
+    }
+
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();

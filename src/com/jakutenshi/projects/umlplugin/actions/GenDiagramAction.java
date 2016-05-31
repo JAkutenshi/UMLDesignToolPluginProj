@@ -62,9 +62,11 @@ public class GenDiagramAction extends AnAction {
         ClassParser classParser = new ClassParser();
 
         for (PsiElement element : elements) {
-            if ((element instanceof PsiClass) && !(element instanceof PsiAnonymousClass)) {
+            if ((element instanceof PsiClass)
+                    && !(element instanceof PsiAnonymousClass)
+                    && !(element instanceof PsiTypeParameter)) {
                 PsiClass psiClass = (PsiClass) element;
-
+//парсим сущность
                 if(psiClass.isInterface()){
                     entity = interfaceParser.parse(psiClass);
                 } else if (psiClass.isEnum()) {
@@ -72,6 +74,12 @@ public class GenDiagramAction extends AnAction {
                 } else {
                     entity = classParser.parse(psiClass);
                 }
+//ищем внутренние сущности
+                PsiClass[] psiInnerEntities = psiClass.getInnerClasses();
+                for (PsiClass innerEntity : psiInnerEntities) {
+                    entity.addInnerEntities(innerEntity.getQualifiedName());
+                }
+//добавляем в контейнер
                 DiagramContainer.getInstance().addUMLEntity(entity);
             }
             parseJavaFile(element.getChildren());

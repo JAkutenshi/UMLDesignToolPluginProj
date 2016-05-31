@@ -1,13 +1,8 @@
 package com.jakutenshi.projects.umlplugin.parser;
 
 import com.intellij.psi.*;
-import com.intellij.psi.impl.source.PsiClassImpl;
-import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 
 /**
  * Created by JAkutenshi on 28.05.2016.

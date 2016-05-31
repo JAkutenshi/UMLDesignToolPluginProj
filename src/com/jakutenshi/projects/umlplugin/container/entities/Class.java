@@ -32,6 +32,14 @@ public class Class extends UMLEntity{
             builder.append("---------------------\n");
         }
 
+//INNER ENTITIES TEST
+        String outerEntity = getOuterEntityName();
+
+        if (outerEntity != null) {
+            builder.append(outerEntity).append('\n');
+        }
+//INNER ENTITIES TEST
+
         if (isException)
             builder.append("<<exception>> ");
         builder.append(getName());

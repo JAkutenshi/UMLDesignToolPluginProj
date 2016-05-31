@@ -1,12 +1,11 @@
 package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 
-import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Generatable;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class EnumConstant extends UMLElement implements Generatable{
+public class EnumConstant implements Generatable{
     private String name;
 
     @Override
