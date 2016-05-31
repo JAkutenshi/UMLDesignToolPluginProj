@@ -10,7 +10,7 @@ import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class InterfaceParser extends Parser {
+public class InterfaceParser extends UMLEntityParser {
     @Override
     public UMLEntity parse(PsiClass psiClass) {
         Interface anInterface = new Interface();
@@ -39,7 +39,7 @@ public class InterfaceParser extends Parser {
             anInterface.addSignature(method);
         }
 //предок
-        anInterface.setExtend(psiClass.getExtendsList().toString());
+        anInterface.setExtendedInterface(parseExtendsEntity(psiClass));
         return anInterface;
     }
 }

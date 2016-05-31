@@ -4,10 +4,12 @@ import com.intellij.psi.*;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.*;
 
+import java.util.ArrayList;
+
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public abstract class Parser {
+public abstract class UMLEntityParser {
     protected static ModifierParser modifierParser;
 
     public abstract UMLEntity parse(PsiClass psiClass);
@@ -79,6 +81,30 @@ public abstract class Parser {
     }
 
     public TypeParameter parseTypeParameter(PsiTypeParameter psiTypeParameter) {
-        return new TypeParameter(psiTypeParameter.getName());
+        TypeParameter typeParameter = new TypeParameter(psiTypeParameter.getName());
+        PsiClassType[] extendsTypes = psiTypeParameter.getExtendsListTypes();
+        for (PsiClassType extendsType : extendsTypes) {
+            typeParameter.setExtendsLimitation(extendsType.getCanonicalText());
+        }
+        return typeParameter;
+    }
+
+    public String parseExtendsEntity(PsiClass psiClass) {
+        PsiClassType[] psiClassTypes = psiClass.getExtendsListTypes();
+        for (PsiClassType psiClassType : psiClassTypes) {
+            return psiClassType.getCanonicalText();
+        }
+        return null;
+    }
+
+    public ArrayList<String> parseImplementInterfases(PsiClass psiClass) {
+        ArrayList<String> implementInterfacesList = new ArrayList<>();
+
+        PsiClassType[] interfaces = psiClass.getImplementsListTypes();
+        for (PsiClassType anInterface : interfaces) {
+            implementInterfacesList.add(anInterface.getCanonicalText());
+        }
+
+        return implementInterfacesList;
     }
 }

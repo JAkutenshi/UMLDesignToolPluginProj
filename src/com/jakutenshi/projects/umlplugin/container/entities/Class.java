@@ -17,7 +17,9 @@ public class Class extends UMLEntity{
     private ArrayList<TypeParameter> typeParameters = new ArrayList<>();
     private ArrayList<Field> fields = new ArrayList<>();
     private ArrayList<Method> methods = new ArrayList<>();
-    private boolean isException = false;
+    private String extendsClass = null;
+    private ArrayList<String> implementInterfaces = new ArrayList<>();
+    private boolean isUtility = false;
 
     //TODO GENERIC CLASS
 
@@ -39,9 +41,9 @@ public class Class extends UMLEntity{
             builder.append(outerEntity).append('\n');
         }
 //INNER ENTITIES TEST
-
-        if (isException)
-            builder.append("<<exception>> ");
+//если класс является службой
+        if (isUtility)
+            builder.append("<<utility>> ");
         builder.append(getName());
         return builder.toString();
     }
@@ -69,24 +71,24 @@ public class Class extends UMLEntity{
         return null;
     }
 
-    public Class(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+    public Class(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<Field> fields, ArrayList<Method> methods, boolean isUtility) {
         super(name, packagePath, keywords);
         this.fields = fields;
         this.methods = methods;
-        this.isException = isException;
+        this.isUtility = isUtility;
     }
 
-    public Class(String name, String packagePath, ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+    public Class(String name, String packagePath, ArrayList<Field> fields, ArrayList<Method> methods, boolean isUtility) {
         super(name, packagePath);
         this.fields = fields;
         this.methods = methods;
-        this.isException = isException;
+        this.isUtility = isUtility;
     }
 
-    public Class(ArrayList<Field> fields, ArrayList<Method> methods, boolean isException) {
+    public Class(ArrayList<Field> fields, ArrayList<Method> methods, boolean isUtility) {
         this.fields = fields;
         this.methods = methods;
-        this.isException = isException;
+        this.isUtility = isUtility;
     }
 
     public Class(String name, String packagePath, HashSet<Keyword> keywords) {
@@ -124,12 +126,12 @@ public class Class extends UMLEntity{
         methods.add(method);
     }
 
-    public boolean isException() {
-        return isException;
+    public boolean isUtility() {
+        return isUtility;
     }
 
-    public void setException(boolean exception) {
-        isException = exception;
+    public void setUtility(boolean utility) {
+        isUtility = utility;
     }
 
     public ArrayList<TypeParameter> getTypeParameters() {
@@ -142,5 +144,25 @@ public class Class extends UMLEntity{
 
     public void addTypeParameter(TypeParameter typeParameter) {
         typeParameters.add(typeParameter);
+    }
+
+    public String getExtendsClass() {
+        return extendsClass;
+    }
+
+    public void setExtendsClass(String extendsClass) {
+        this.extendsClass = extendsClass;
+    }
+
+    public ArrayList<String> getImplementInterfaces() {
+        return implementInterfaces;
+    }
+
+    public void setImplementInterfaces(ArrayList<String> implementInterfaces) {
+        this.implementInterfaces = implementInterfaces;
+    }
+
+    public void addImplementInterface(String anInterface) {
+        implementInterfaces.add(anInterface);
     }
 }

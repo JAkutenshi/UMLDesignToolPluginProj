@@ -21,7 +21,7 @@ import com.jakutenshi.projects.umlplugin.parser.EnumParser;
  */
 public class GenDiagramAction extends AnAction {
 
-    private Project project;
+    private static Project project;
     private PsiManager psiManager;
 
     @Override
@@ -33,6 +33,7 @@ public class GenDiagramAction extends AnAction {
         System.out.println();
         DiagramContainer container = DiagramContainer.getInstance();
         System.out.println(container.toString());
+
     }
 
     private void parseForJavaFiles(VirtualFile[] virtualFiles) {
@@ -84,5 +85,9 @@ public class GenDiagramAction extends AnAction {
             }
             parseJavaFile(element.getChildren());
         }
+    }
+
+    public static Project getProject() {
+        return project;
     }
 }

@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.test;
+package com.jakutenshi.projects.umlplugin.draw;
 
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 

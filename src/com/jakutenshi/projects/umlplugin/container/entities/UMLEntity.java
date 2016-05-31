@@ -16,7 +16,6 @@ public abstract class UMLEntity implements Generatable {
     private String packagePath = "noPackage";
     private Scope scope = Scope.PACKAGE;
     private HashSet<Keyword> keywords = new HashSet<>();
-    private String extend; //ToDO CodeGeneration
 
     private ArrayList<String> innerEntities = new ArrayList<>();
 
@@ -56,14 +55,6 @@ public abstract class UMLEntity implements Generatable {
 
     public void setPackagePath(String packagePath) {
         this.packagePath = packagePath;
-    }
-
-    public String getExtend() {
-        return extend;
-    }
-
-    public void setExtend(String extend) {
-        this.extend = extend;
     }
 
     public abstract String titleToUML();

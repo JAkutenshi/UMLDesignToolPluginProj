@@ -9,7 +9,7 @@ import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class EnumParser extends Parser{
+public class EnumParser extends UMLEntityParser {
     @Override
     public UMLEntity parse(PsiClass psiClass) {
         Enum enumClass = new Enum();

@@ -12,24 +12,16 @@ import java.util.HashSet;
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Interface extends UMLEntity {
+//атрибуты
     private ArrayList<TypeParameter> typeParameters = new ArrayList<>();
     private ArrayList<Method> signatures = new ArrayList<>();
+//расширение другого интерфейса
+    private String extendedInterface = null;
+
 
     @Override
     public String titleToUML() {
-        StringBuilder builder = new StringBuilder();
-
-        if (typeParameters.size() != 0) {
-            for (TypeParameter typeParameter : typeParameters) {
-                builder.append(typeParameter.toUML())
-                        .append('\n');
-            }
-            builder.append("---------------------\n");
-        }
-        builder.append("<<interface>> ")
-                .append(getName());
-
-        return builder.toString();
+        return "<<interface>> " + getName();
     }
 
     @Override
@@ -97,5 +89,13 @@ public class Interface extends UMLEntity {
 
     public void addTypeParameter(TypeParameter typeParameter) {
         typeParameters.add(typeParameter);
+    }
+
+    public String getExtendedInterface() {
+        return extendedInterface;
+    }
+
+    public void setExtendedInterface(String extendedInterface) {
+        this.extendedInterface = extendedInterface;
     }
 }

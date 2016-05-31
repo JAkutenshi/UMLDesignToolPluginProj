@@ -3,7 +3,7 @@ package com.jakutenshi.projects.umlplugin.ui;
 import com.jakutenshi.projects.umlplugin.container.DiagramContainer;
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
-import com.jakutenshi.projects.umlplugin.test.InterfaceDrawer;
+import com.jakutenshi.projects.umlplugin.draw.InterfaceDrawer;
 
 import javax.swing.*;
 import java.awt.*;

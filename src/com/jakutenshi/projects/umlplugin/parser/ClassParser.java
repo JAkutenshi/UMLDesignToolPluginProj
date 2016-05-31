@@ -4,12 +4,13 @@ import com.intellij.psi.*;
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 
+
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class ClassParser extends Parser {
-     @Override
-    public UMLEntity parse(PsiClass psiClass) {
+public class ClassParser extends UMLEntityParser {
+    @Override
+    public UMLEntity parse(PsiClass psiClass){
         Class aClass = new Class();
 //пакет
         aClass.setPackagePath(psiClass.getQualifiedName());
@@ -27,18 +28,25 @@ public class ClassParser extends Parser {
                 aClass.addTypeParameter(parseTypeParameter(psiTypeParameter));
             }
         }
-//Является ли исключением
-//TODO EXCEPTION
 //поля
         PsiField[] fields = psiClass.getFields();
         for (PsiField psiField : fields) {
             aClass.addField(parseField(psiField));
+        }
+//если класс является службой
+        if (aClass.getFields().size() == 0) {
+            aClass.setUtility(true);
         }
 //методы
         PsiMethod[] psiMethods = psiClass.getMethods();
         for (PsiMethod psiMethod : psiMethods) {
             aClass.addMethod(parseMethod(psiMethod));
         }
+//является ли наследником
+        aClass.setExtendsClass(parseExtendsEntity(psiClass));
+//список реализующих интерфейсов
+        aClass.setImplementInterfaces(parseImplementInterfases(psiClass));
+
         return aClass;
     }
 }

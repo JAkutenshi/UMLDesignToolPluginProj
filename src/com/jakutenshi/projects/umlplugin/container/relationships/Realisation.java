@@ -1,7 +1,7 @@
 package com.jakutenshi.projects.umlplugin.container.relationships;
 
 /**
- * Created by JAkutenshi on 28.05.2016.
+ * Created by JAkutenshi on 31.05.2016.
  */
-public class Agregation {
+public class Realisation {
 }
