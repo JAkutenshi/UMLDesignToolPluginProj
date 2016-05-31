@@ -3,7 +3,7 @@ package com.jakutenshi.projects.umlplugin.container.entities.attributes;
 /**
  * Created by JAkutenshi on 30.05.2016.
  */
-public class TypeParameter extends EnumField {
+public class TypeParameter extends EnumConstant {
     @Override
     public String toUML() {
         return super.toUML() + " : Class";

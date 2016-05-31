@@ -1,7 +1,7 @@
 package com.jakutenshi.projects.umlplugin.container.entities;
 
 
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.EnumField;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.EnumConstant;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.HashSet;
  * Created by JAkutenshi on 28.05.2016.
  */
 public class Enum extends UMLEntity {
-    private ArrayList<EnumField> enumFields = new ArrayList<>();
+    private ArrayList<EnumConstant> enumConstants = new ArrayList<>();
 
     @Override
     public String titleToUML() {
@@ -23,8 +23,8 @@ public class Enum extends UMLEntity {
         StringBuilder builder = new StringBuilder();
         builder.append(titleToUML())
                 .append("\n---------------------\n");
-        for (EnumField enumField : enumFields) {
-            builder.append(enumField.toUML())
+        for (EnumConstant enumConstant : enumConstants) {
+            builder.append(enumConstant.toUML())
                     .append("\n");
         }
         return builder.toString();
@@ -37,9 +37,9 @@ public class Enum extends UMLEntity {
                 .append(" enum ")
                 .append(getName())
                 .append(" {\n");
-        for (int i = 0; i < enumFields.size(); i++) {
-            builder.append(enumFields.get(i).toCode());
-            if (i != enumFields.size() - 1) {
+        for (int i = 0; i < enumConstants.size(); i++) {
+            builder.append(enumConstants.get(i).toCode());
+            if (i != enumConstants.size() - 1) {
                 builder.append(",\n");
             }
         }
@@ -47,18 +47,18 @@ public class Enum extends UMLEntity {
         return builder.toString();
     }
 
-    public Enum(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<EnumField> enumFields) {
+    public Enum(String name, String packagePath, HashSet<Keyword> keywords, ArrayList<EnumConstant> enumConstants) {
         super(name, packagePath, keywords);
-        this.enumFields = enumFields;
+        this.enumConstants = enumConstants;
     }
 
-    public Enum(String name, String packagePath, ArrayList<EnumField> enumFields) {
+    public Enum(String name, String packagePath, ArrayList<EnumConstant> enumConstants) {
         super(name, packagePath);
-        this.enumFields = enumFields;
+        this.enumConstants = enumConstants;
     }
 
-    public Enum(ArrayList<EnumField> enumFields) {
-        this.enumFields = enumFields;
+    public Enum(ArrayList<EnumConstant> enumConstants) {
+        this.enumConstants = enumConstants;
     }
 
     public Enum(String name, String packagePath, HashSet<Keyword> keywords) {
@@ -72,16 +72,16 @@ public class Enum extends UMLEntity {
     public Enum() {
     }
 
-    public ArrayList<EnumField> getEnumFields() {
-        return enumFields;
+    public ArrayList<EnumConstant> getEnumConstants() {
+        return enumConstants;
     }
 
-    public void setEnumFields(ArrayList<EnumField> enumFields) {
-        this.enumFields = enumFields;
+    public void setEnumConstants(ArrayList<EnumConstant> enumConstants) {
+        this.enumConstants = enumConstants;
     }
 
-    public void addEnumField(EnumField enumField) {
-        enumFields.add(enumField);
+    public void addEnumField(EnumConstant enumConstant) {
+        enumConstants.add(enumConstant);
     }
 
 

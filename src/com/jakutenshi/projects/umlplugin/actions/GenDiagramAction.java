@@ -4,10 +4,7 @@ import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
+import com.intellij.psi.*;
 import com.intellij.psi.impl.source.PsiClassImpl;
 import com.intellij.psi.impl.source.PsiJavaFileImpl;
 import com.jakutenshi.projects.umlplugin.container.DiagramContainer;
@@ -44,10 +41,11 @@ public class GenDiagramAction extends AnAction {
 
         for (VirtualFile virtualFile : virtualFiles) {
             psiFile = psiManager.findFile(virtualFile);
+            //Find all Java files
             if (psiFile instanceof PsiJavaFileImpl) {
-//Find all Java files
                 parseJavaFile(psiFile.getChildren());
-            } else {
+            }
+            else {
                 parseForJavaFiles(virtualFile.getChildren());
             }
         }
@@ -55,25 +53,24 @@ public class GenDiagramAction extends AnAction {
     }
 
     private void parseJavaFile(PsiElement[] elements) {
-        if (elements == null) return;
-
+        if (elements == null) {
+            return;
+        }
         UMLEntity entity;
-        Enum enumClass;
         EnumParser enumParser = new EnumParser();
-        Interface anInterface;
         InterfaceParser interfaceParser = new InterfaceParser();
-        Class aClass;
         ClassParser classParser = new ClassParser();
 
         for (PsiElement element : elements) {
-            if (element instanceof PsiClassImpl) {
-                PsiClassImpl psiClass = (PsiClassImpl) element;
+            if ((element instanceof PsiClass) && !(element instanceof PsiAnonymousClass)) {
+                PsiClass psiClass = (PsiClass) element;
+
                 if(psiClass.isInterface()){
-                    entity = (UMLEntity) interfaceParser.parse(psiClass);
+                    entity = interfaceParser.parse(psiClass);
                 } else if (psiClass.isEnum()) {
-                    entity = (UMLEntity) enumParser.parse(psiClass);
+                    entity = enumParser.parse(psiClass);
                 } else {
-                    entity = (UMLEntity) classParser.parse(psiClass);
+                    entity = classParser.parse(psiClass);
                 }
                 DiagramContainer.getInstance().addUMLEntity(entity);
             }

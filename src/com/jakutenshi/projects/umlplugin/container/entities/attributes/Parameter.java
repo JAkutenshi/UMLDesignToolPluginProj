@@ -5,7 +5,7 @@ import java.util.HashSet;
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class Parameter extends EnumField {
+public class Parameter extends EnumConstant {
     private HashSet<Keyword> keywords = getKeywords();
     private String type;
 

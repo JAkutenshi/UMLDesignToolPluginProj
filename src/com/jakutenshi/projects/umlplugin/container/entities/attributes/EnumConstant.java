@@ -6,7 +6,7 @@ import com.jakutenshi.projects.umlplugin.container.entities.Generatable;
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class EnumField extends UMLElement implements Generatable{
+public class EnumConstant extends UMLElement implements Generatable{
     private String name;
 
     @Override
@@ -19,11 +19,11 @@ public class EnumField extends UMLElement implements Generatable{
         return name;
     }
 
-    public EnumField(String name) {
+    public EnumConstant(String name) {
         this.name = name;
     }
 
-    public EnumField() {
+    public EnumConstant() {
     }
 
     public String getName() {

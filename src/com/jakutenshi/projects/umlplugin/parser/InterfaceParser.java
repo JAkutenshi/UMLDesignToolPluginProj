@@ -6,17 +6,17 @@ import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiTypeParameter;
 import com.jakutenshi.projects.umlplugin.container.UMLElement;
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
+import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 
 /**
  * Created by JAkutenshi on 28.05.2016.
  */
-public class InterfaceParser implements Parser {
+public class InterfaceParser extends Parser {
     @Override
-    public UMLElement parse(PsiElement psiElement) {
+    public UMLEntity parse(PsiClass psiClass) {
         Interface anInterface = new Interface();
-        PsiClass psiClass = (PsiClass) psiElement;
 //пакет
         anInterface.setPackagePath(psiClass.getQualifiedName());
 //модификаторы
@@ -29,17 +29,15 @@ public class InterfaceParser implements Parser {
 //генерик-типы
         PsiTypeParameter[] psiTypeParameters = psiClass.getTypeParameters();
         if (psiTypeParameters != null) {
-            TypeParameterParser typeParameterParser = new TypeParameterParser();
             for (PsiTypeParameter psiTypeParameter : psiTypeParameters) {
-                anInterface.addTypeParameter((TypeParameter) typeParameterParser.parse(psiTypeParameter));
+                anInterface.addTypeParameter(parseTypeParameter(psiTypeParameter));
             }
         }
 //сигнатуры
         PsiMethod[] psiMethods = psiClass.getMethods();
-        MethodParser signatureParser = new MethodParser();
         Method method;
         for (PsiMethod psiMethod : psiMethods) {
-            method = (Method) signatureParser.parse(psiMethod);
+            method = parseMethod(psiMethod);
             method.setIntarfaceSignature(true);
             anInterface.addSignature(method);
         }
