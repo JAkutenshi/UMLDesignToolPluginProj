@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.ActionManager;
 import com.intellij.openapi.actionSystem.ActionToolbar;
 import com.intellij.openapi.ui.SimpleToolWindowPanel;
 import com.intellij.ui.ScrollPaneFactory;
+import com.intellij.ui.components.JBScrollPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -27,7 +28,10 @@ public class UMLToolWindowContentPanel extends SimpleToolWindowPanel {
         setToolbar(actionToolbar.getComponent());
 
         drawingPanel =  new UMLDiagramPanel();
-        setContent(drawingPanel);
+        /*JBScrollPane scrollPane = new JBScrollPane();
+        scrollPane.setLayout(new ScrollPaneLayout());
+        scrollPane.add(drawingPanel);*/
+        setContent(new JBScrollPane(drawingPanel));
     }
 
 }

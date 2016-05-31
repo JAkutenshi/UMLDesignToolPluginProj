@@ -5,6 +5,8 @@ import java.util.Map;
 /**
  * Created by JAkutenshi on 31.05.2016.
  */
-public abstract class A <T extends Map<?, String>> {
-    public abstract T foo();
+public class B extends A {
+    public Map<?, String> foo() {
+        return null;
+    }
 }

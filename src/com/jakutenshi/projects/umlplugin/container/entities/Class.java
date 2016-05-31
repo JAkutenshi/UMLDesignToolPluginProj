@@ -34,16 +34,10 @@ public class Class extends UMLEntity{
             builder.append("---------------------\n");
         }
 
-//INNER ENTITIES TEST
-        String outerEntity = getOuterEntityName();
-
-        if (outerEntity != null) {
-            builder.append(outerEntity).append('\n');
-        }
-//INNER ENTITIES TEST
 //если класс является службой
-        if (isUtility)
+        if (isUtility) {
             builder.append("<<utility>> ");
+        }
         builder.append(getName());
         return builder.toString();
     }

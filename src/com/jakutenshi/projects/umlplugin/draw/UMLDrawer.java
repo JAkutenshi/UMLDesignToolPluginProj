@@ -3,6 +3,9 @@ package com.jakutenshi.projects.umlplugin.draw;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 
 import java.awt.*;
+import java.awt.font.TextAttribute;
+import java.util.LinkedList;
+import java.util.Map;
 
 /**
  * Created by JAkutenshi on 29.05.2016.
@@ -47,7 +50,7 @@ public abstract class UMLDrawer {
     private int y;
     private int frameWidth;
     private int frameHeight;
-    private final int offset;
+    private int offset;
 
     public final static int LINE_SPACING = 4;
     public final static int FRAME_MARGIN = 10;
@@ -56,41 +59,68 @@ public abstract class UMLDrawer {
     public final static int DEFAULT_LINE_FONT_STYLE = Font.PLAIN;
     public final static int DEFAULT_LINE_FONT_SIZE = 14;
     public final static int SYMBOL_WIDTH = 9;
-    public final static int SYMBOL_HEIGHT = 11;
+    public final static int SYMBOL_HEIGHT = 12;
+    protected final static Font ITALIC_FONT = new Font(DEFAULT_LINE_FONT,
+                                                          Font.ITALIC,
+                                                          DEFAULT_LINE_FONT_SIZE);
 
     private DrawnLine drawnTitle;
 
     public abstract void draw(Graphics2D g);
-    protected abstract void fillContained(UMLEntity entity);
+    protected abstract void fillContent(UMLEntity entity);
 
-    public UMLDrawer(int x, int y, UMLEntity entity) {
-        this.x = x;
-        this.y = y;
-        offset = x + FRAME_MARGIN;
+    public UMLDrawer(UMLEntity entity) {
+
 //заголовок
         drawnTitle = new DrawnLine(entity.titleToUML());
         if (entity.getKeywords().contains("abstract")) {
-            drawnTitle.setFont(new Font(DEFAULT_LINE_FONT,
-                    Font.ITALIC,
-                    DEFAULT_LINE_FONT_SIZE));
+            drawnTitle.setFont(ITALIC_FONT);
         }
+        fillContent(entity);
     }
 
-    /**
-     * @param y - откуда разделитель по У
-     * @return откуда идет рисование дальше
-     */
+    protected int drawSection(int y, LinkedList<DrawnLine> lines, Graphics2D g) {
+        for (DrawnLine line : lines) {
+            y = drawLine(y, line, g);
+        }
+        return y;
+    }
+
+    protected int drawLine(int y, DrawnLine line, Graphics2D g) {
+        g.setFont(line.getFont());
+        g.drawChars(line.getLine().toCharArray(),
+                0,
+                line.getLine().length(),
+                getOffset(),
+                y);
+        return y + SYMBOL_HEIGHT + LINE_SPACING;
+    }
+
+    protected void drawFrame(Graphics2D g) {
+//рисуем прямогугольник
+        g.setColor(Color.WHITE);
+        g.fillRect(getX(), getY(), getFrameWidth(), getFrameHeight());
+//рамку вокруг
+        g.setColor(Color.BLACK);
+        g.drawRect(getX(), getY(), getFrameWidth(), getFrameHeight());
+    }
+
     protected int drawSeparator(int y, Graphics2D g) {
         g.drawLine(x, y + LINE_SPACING,
                 x + frameWidth, y + LINE_SPACING);
         return y + SEPARATOR_HEIGHT + SYMBOL_HEIGHT;
     }
 
-    public DrawnLine getDrawnTitle() {
+    protected void makeFontUnderlined(Font font) {
+        Map fontAttributes = font.getAttributes();
+        fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+    }
+
+    protected DrawnLine getDrawnTitle() {
         return drawnTitle;
     }
 
-    public void setDrawnTitle(DrawnLine drawnTitle) {
+    protected void setDrawnTitle(DrawnLine drawnTitle) {
         this.drawnTitle = drawnTitle;
     }
 
@@ -116,6 +146,7 @@ public abstract class UMLDrawer {
 
     public void setX(int x) {
         this.x = x;
+        offset = x + FRAME_MARGIN;
     }
 
     public int getY() {
