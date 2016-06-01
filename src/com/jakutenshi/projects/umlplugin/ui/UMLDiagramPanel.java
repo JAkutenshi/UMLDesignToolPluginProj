@@ -73,7 +73,7 @@ public class UMLDiagramPanel extends JPanel {
         int maxWidth = currentX * 2 + (maxDrawnEntityWidth + space * 2) * diagramDrawers.size();
         int maxHeight = currentY * 2 + (maxDrawnEntityHeight + space * 2) * diagramDrawers.size();
 
-        setSize(maxWidth, maxHeight);
+        setPreferredSize(new Dimension(maxWidth, maxHeight));
 
 
         int rows = 1 + (int) Math.sqrt(diagramDrawers.size());

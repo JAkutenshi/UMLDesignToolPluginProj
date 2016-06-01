@@ -28,10 +28,11 @@ public class UMLToolWindowContentPanel extends SimpleToolWindowPanel {
         setToolbar(actionToolbar.getComponent());
 
         drawingPanel =  new UMLDiagramPanel();
-        /*JBScrollPane scrollPane = new JBScrollPane();
+        JScrollPane scrollPane = new JScrollPane(drawingPanel);
         scrollPane.setLayout(new ScrollPaneLayout());
-        scrollPane.add(drawingPanel);*/
-        setContent(new JBScrollPane(drawingPanel));
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        setContent(scrollPane);
     }
 
 }
