@@ -26,7 +26,7 @@ public class ClassDrawer extends UMLDrawer {
 //рисуем прямоугольник
         drawFrame(g);
 //заголовок
-        currentY = drawLine(currentY, getDrawnTitle(), g);
+        currentY = drawTitle(currentY, g);
 //разделитель
         currentY = drawSeparator(currentY, g);
 //поля
@@ -72,8 +72,8 @@ public class ClassDrawer extends UMLDrawer {
         setFrameWidth(maxLength * SYMBOL_WIDTH + 2 * FRAME_MARGIN);
         setFrameHeight((SYMBOL_HEIGHT + LINE_SPACING) //заголовок
                 + SEPARATOR_HEIGHT * 2
-                + drawnFields.size() * (SYMBOL_HEIGHT + LINE_SPACING)
-                + drawnMethods.size() * (SYMBOL_HEIGHT + LINE_SPACING)
+                + (drawnFields.size() ==  0 ? 1 : drawnFields.size()) * DRAWN_LINE_HEIGHT
+                + (drawnMethods.size() ==  0 ? 1 : drawnMethods.size()) * DRAWN_LINE_HEIGHT
                 + 2 * FRAME_MARGIN);
     }
 }

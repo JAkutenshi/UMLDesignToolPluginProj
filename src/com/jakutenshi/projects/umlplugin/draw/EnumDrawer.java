@@ -24,7 +24,7 @@ public class EnumDrawer extends UMLDrawer {
 //рисуем прямоугольник
         drawFrame(g);
 //заголовок
-        currentY = drawLine(currentY, getDrawnTitle(), g);
+        currentY = drawTitle(currentY, g);
 //разделитель
         currentY = drawSeparator(currentY, g);
 //константы
@@ -47,7 +47,8 @@ public class EnumDrawer extends UMLDrawer {
         setFrameWidth(maxLength * SYMBOL_WIDTH + 2 * FRAME_MARGIN);
         setFrameHeight((SYMBOL_HEIGHT + LINE_SPACING) //заголовок
                 + SEPARATOR_HEIGHT * 2
-                + drawnEnumConstants.size() * (SYMBOL_HEIGHT + LINE_SPACING)
+                + (drawnEnumConstants.size() ==  0 ? 1 : drawnEnumConstants.size())
+                * (SYMBOL_HEIGHT + LINE_SPACING)
                 + 2 * FRAME_MARGIN);
     }
 }

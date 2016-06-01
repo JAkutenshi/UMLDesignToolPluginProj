@@ -59,10 +59,11 @@ public abstract class UMLDrawer {
     public final static int DEFAULT_LINE_FONT_STYLE = Font.PLAIN;
     public final static int DEFAULT_LINE_FONT_SIZE = 14;
     public final static int SYMBOL_WIDTH = 9;
-    public final static int SYMBOL_HEIGHT = 12;
+    public final static int SYMBOL_HEIGHT = 10;
     protected final static Font ITALIC_FONT = new Font(DEFAULT_LINE_FONT,
                                                           Font.ITALIC,
                                                           DEFAULT_LINE_FONT_SIZE);
+    public final static int DRAWN_LINE_HEIGHT = SYMBOL_HEIGHT + LINE_SPACING;
 
     private DrawnLine drawnTitle;
 
@@ -80,10 +81,18 @@ public abstract class UMLDrawer {
     }
 
     protected int drawSection(int y, LinkedList<DrawnLine> lines, Graphics2D g) {
+        if (lines.size() == 0) {
+            y += SYMBOL_HEIGHT;
+        }
         for (DrawnLine line : lines) {
             y = drawLine(y, line, g);
         }
-        return y;
+        return y - SYMBOL_HEIGHT;
+    }
+
+    protected int drawTitle(int y, Graphics2D g) {
+        drawLine(y, getDrawnTitle(), g);
+        return y + LINE_SPACING;
     }
 
     protected int drawLine(int y, DrawnLine line, Graphics2D g) {
@@ -93,7 +102,7 @@ public abstract class UMLDrawer {
                 line.getLine().length(),
                 getOffset(),
                 y);
-        return y + SYMBOL_HEIGHT + LINE_SPACING;
+        return y + DRAWN_LINE_HEIGHT;
     }
 
     protected void drawFrame(Graphics2D g) {

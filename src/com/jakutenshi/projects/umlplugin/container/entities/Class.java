@@ -26,14 +26,6 @@ public class Class extends UMLEntity{
     @Override
     public String titleToUML() {
         StringBuilder builder = new StringBuilder();
-        if (typeParameters.size() != 0) {
-            for (TypeParameter typeParameter : typeParameters) {
-                builder.append(typeParameter.toUML())
-                        .append('\n');
-            }
-            builder.append("---------------------\n");
-        }
-
 //если класс является службой
         if (isUtility) {
             builder.append("<<utility>> ");

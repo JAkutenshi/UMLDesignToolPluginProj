@@ -24,7 +24,7 @@ public class InterfaceDrawer extends UMLDrawer {
 //рисуем прямоугольник
         drawFrame(g);
 //заголовок
-        currentY = drawLine(currentY, getDrawnTitle(), g);
+        currentY = drawTitle(currentY, g);
 //разделитель
         currentY = drawSeparator(currentY, g);
 //сигнатуры
@@ -51,7 +51,8 @@ public class InterfaceDrawer extends UMLDrawer {
         setFrameWidth(maxLength * SYMBOL_WIDTH + 2 * FRAME_MARGIN);
         setFrameHeight((SYMBOL_HEIGHT + LINE_SPACING) //заголовок
                 + SEPARATOR_HEIGHT
-                + drawnSignatures.size() * (SYMBOL_HEIGHT + LINE_SPACING)
+                + (drawnSignatures.size() ==  0 ? 1 : drawnSignatures.size())
+                * (SYMBOL_HEIGHT + LINE_SPACING)
                 + 2 * FRAME_MARGIN);
     }
 }
