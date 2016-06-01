@@ -44,7 +44,7 @@ public class Method implements Generatable {
                     .append(returnType);
         }
 //если не интерфейс и final, то readOnly уточнение
-        if (!isIntarfaceSignature && keywords.contains("final")) {
+        if (!isIntarfaceSignature && keywords.contains(Keyword.FINAL)) {
             builder.append(" {readOnly}");
         }
         return builder.toString();

@@ -32,6 +32,7 @@ public class UMLToolWindowContentPanel extends SimpleToolWindowPanel {
         scrollPane.setLayout(new ScrollPaneLayout());
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(50);
         setContent(scrollPane);
     }
 

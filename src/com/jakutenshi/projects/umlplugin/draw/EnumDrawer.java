@@ -28,7 +28,7 @@ public class EnumDrawer extends UMLDrawer {
 //разделитель
         currentY = drawSeparator(currentY, g);
 //константы
-        currentY = drawSection(currentY, drawnEnumConstants, g);
+        drawSection(currentY, drawnEnumConstants, g);
     }
 
     @Override

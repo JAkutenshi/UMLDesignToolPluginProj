@@ -1,7 +1,9 @@
 package com.jakutenshi.projects.umlplugin.draw;
 
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 
+import javax.swing.text.AttributeSet;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.LinkedList;
@@ -52,7 +54,7 @@ public abstract class UMLDrawer {
     private int frameHeight;
     private int offset;
 
-    public final static int LINE_SPACING = 4;
+    public final static int LINE_SPACING = 10;
     public final static int FRAME_MARGIN = 10;
     public final static int SEPARATOR_HEIGHT = LINE_SPACING * 2 + 1;
     public final static String DEFAULT_LINE_FONT = "Monospaced";
@@ -74,7 +76,7 @@ public abstract class UMLDrawer {
 
 //заголовок
         drawnTitle = new DrawnLine(entity.titleToUML());
-        if (entity.getKeywords().contains("abstract")) {
+        if (entity.getKeywords().contains(Keyword.ABSTRACT)) {
             drawnTitle.setFont(ITALIC_FONT);
         }
         fillContent(entity);
@@ -97,9 +99,7 @@ public abstract class UMLDrawer {
 
     protected int drawLine(int y, DrawnLine line, Graphics2D g) {
         g.setFont(line.getFont());
-        g.drawChars(line.getLine().toCharArray(),
-                0,
-                line.getLine().length(),
+        g.drawString(line.getLine(),
                 getOffset(),
                 y);
         return y + DRAWN_LINE_HEIGHT;
@@ -120,9 +120,10 @@ public abstract class UMLDrawer {
         return y + SEPARATOR_HEIGHT + SYMBOL_HEIGHT;
     }
 
-    protected void makeFontUnderlined(Font font) {
-        Map fontAttributes = font.getAttributes();
+    protected void makeFontUnderlined(DrawnLine line) {
+        Map fontAttributes = line.getFont().getAttributes();
         fontAttributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+        line.setFont(line.getFont().deriveFont(fontAttributes));
     }
 
     protected DrawnLine getDrawnTitle() {

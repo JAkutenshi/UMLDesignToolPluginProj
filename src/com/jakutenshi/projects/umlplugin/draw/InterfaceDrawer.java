@@ -2,6 +2,7 @@ package com.jakutenshi.projects.umlplugin.draw;
 
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
 
 import java.awt.*;
@@ -40,8 +41,8 @@ public class InterfaceDrawer extends UMLDrawer {
 
         for (Method signature : anInterface.getSignatures()) {
             drawnSignatures.addFirst(new DrawnLine(signature.toUML()));
-            if (signature.getKeywords().contains("static")) {
-                makeFontUnderlined(drawnSignatures.getFirst().getFont());
+            if (signature.getKeywords().contains(Keyword.STATIC)) {
+                makeFontUnderlined(drawnSignatures.getFirst());
             }
             if (drawnSignatures.getFirst().getLine().length() > maxLength) {
                 maxLength = drawnSignatures.getFirst().getLine().length();
