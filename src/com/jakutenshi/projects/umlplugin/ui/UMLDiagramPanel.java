@@ -9,7 +9,9 @@ import com.jakutenshi.projects.umlplugin.draw.ClassDrawer;
 import com.jakutenshi.projects.umlplugin.draw.EnumDrawer;
 import com.jakutenshi.projects.umlplugin.draw.InterfaceDrawer;
 import com.jakutenshi.projects.umlplugin.draw.UMLDrawer;
+import com.jakutenshi.projects.umlplugin.draw.relationships.Composition;
 import com.jakutenshi.projects.umlplugin.draw.relationships.Generalisation;
+import com.jakutenshi.projects.umlplugin.draw.relationships.Realisation;
 import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
 import com.jakutenshi.projects.umlplugin.util.UMLDiagramContainerObserver;
 
@@ -113,9 +115,9 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
         for (UMLRelationDrawer arrow : arrows) {
             arrow.drawArrow(g);
         }
-        for (String key : drawers.keySet()) {
+        /*for (String key : drawers.keySet()) {
             drawers.get(key).draw(g);
-        }
+        }*/
 
     }
 
@@ -197,14 +199,14 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
             if (entity instanceof Class) {
                 aClass = (Class) entity;
                 if (aClass.getExtendsClass() != null){
-                    arrow = new Generalisation();
+                    arrow = new Composition();
                     if (entities.containsKey(aClass.getExtendsClass())) {
                         targetEntity = entities.get(aClass.getExtendsClass());
                         targetDrawer = drawers.get(targetEntity.getPackagePath());
                         arrow.setStartKey(drawer.getKey());
-                        arrow.setStart(new Point(drawer.getAnchorX(), drawer.getAnchorY()));
+                        arrow.setStart(drawer.getAnchorX(), drawer.getAnchorY());
                         arrow.setEndKey(targetDrawer.getKey());
-                        arrow.setEnd(new Point(targetDrawer.getAnchorX(), targetDrawer.getAnchorY()));
+                        arrow.setEnd(targetDrawer.getAnchorX(), targetDrawer.getAnchorY());
                         drawer.addObserver(arrow);
                         targetDrawer.addObserver(arrow);
                         arrows.add(arrow);
