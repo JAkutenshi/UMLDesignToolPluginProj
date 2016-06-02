@@ -5,6 +5,8 @@ import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
+import com.jakutenshi.projects.umlplugin.draw.relationships.Generalisation;
+import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;
@@ -17,6 +19,7 @@ import java.util.Map;
 public class ClassDrawer extends UMLDrawer {
     private LinkedList<DrawnLine> drawnFields;
     private LinkedList<DrawnLine> drawnMethods;
+
 
     public ClassDrawer(UMLEntity entity) {
         super(entity);
@@ -78,5 +81,13 @@ public class ClassDrawer extends UMLDrawer {
                 + (drawnFields.size() ==  0 ? 1 : drawnFields.size()) * DRAWN_LINE_HEIGHT
                 + (drawnMethods.size() ==  0 ? 1 : drawnMethods.size()) * DRAWN_LINE_HEIGHT
                 + 2 * FRAME_MARGIN);
+    }
+
+    @Override
+    public void fillRelations(UMLEntity entity) {
+        Class aClass = (Class) entity;
+        if (aClass.getExtendsClass() != null) {
+            Generalisation generalisationArrow = new Generalisation();
+        }
     }
 }

@@ -8,6 +8,7 @@ import java.util.HashSet;
 public class Parameter extends EnumConstant {
     private HashSet<Keyword> keywords = getKeywords();
     private String type;
+    private String typePath;
 
     @Override
     public String toUML() {
@@ -65,5 +66,13 @@ public class Parameter extends EnumConstant {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public String getTypePath() {
+        return typePath;
+    }
+
+    public void setTypePath(String typePath) {
+        this.typePath = typePath;
     }
 }

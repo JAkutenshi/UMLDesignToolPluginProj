@@ -2,17 +2,20 @@ package com.jakutenshi.projects.umlplugin.draw;
 
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
+import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
+import com.jakutenshi.projects.umlplugin.util.Observable;
 
 import javax.swing.text.AttributeSet;
 import java.awt.*;
 import java.awt.font.TextAttribute;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Map;
 
 /**
  * Created by JAkutenshi on 29.05.2016.
  */
-public abstract class UMLDrawer {
+public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
     protected class DrawnLine {
         private Font font = new Font(DEFAULT_LINE_FONT,
                 DEFAULT_LINE_FONT_STYLE,
@@ -48,11 +51,13 @@ public abstract class UMLDrawer {
         }
     }
 
-    private int x;
-    private int y;
-    private int frameWidth;
-    private int frameHeight;
-    private int offset;
+    private int x = 0;
+    private int y = 0;
+    private int frameWidth = 0;
+    private int frameHeight = 0;
+    private int offset = 0;
+    private int anchorX = 0;
+    private int anchorY = 0;
 
     public final static int LINE_SPACING = 10;
     public final static int FRAME_MARGIN = 10;
@@ -67,13 +72,16 @@ public abstract class UMLDrawer {
                                                           DEFAULT_LINE_FONT_SIZE);
     public final static int DRAWN_LINE_HEIGHT = SYMBOL_HEIGHT + LINE_SPACING;
 
+    private String key;
     private DrawnLine drawnTitle;
+    private ArrayList<UMLRelationDrawer> observableArrows = new ArrayList<>();
 
     public abstract void draw(Graphics2D g);
     protected abstract void fillContent(UMLEntity entity);
+    public abstract void fillRelations(UMLEntity entity);
 
     public UMLDrawer(UMLEntity entity) {
-
+        key = entity.getPackagePath();
 //заголовок
         drawnTitle = new DrawnLine(entity.titleToUML());
         if (entity.getKeywords().contains(Keyword.ABSTRACT)) {
@@ -156,7 +164,9 @@ public abstract class UMLDrawer {
 
     public void setX(int x) {
         this.x = x;
+        anchorX = x + frameWidth / 2;
         offset = x + FRAME_MARGIN;
+        notifyObservers();
     }
 
     public int getY() {
@@ -165,9 +175,65 @@ public abstract class UMLDrawer {
 
     public void setY(int y) {
         this.y = y;
+        anchorY = y + frameHeight / 2;
+        notifyObservers();
     }
 
     public int getOffset() {
         return offset;
+    }
+
+    @Override
+    public String toString() {
+        return drawnTitle.getLine();
+    }
+
+    public int getAnchorX() {
+        return anchorX;
+    }
+
+    public void setAnchorX(int anchorX) {
+        this.anchorX = anchorX;
+        setX(anchorX - frameWidth / 2);
+        notifyObservers();
+    }
+
+    public int getAnchorY() {
+        return anchorY;
+    }
+
+    public void setAnchorY(int anchorY) {
+        this.anchorY = anchorY;
+        y = anchorY - frameHeight / 2;
+        notifyObservers();
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (UMLRelationDrawer observableArrow : observableArrows) {
+            observableArrow.onChange(key, anchorX, anchorY);
+        }
+    }
+
+    @Override
+    public void addObserver(UMLRelationDrawer observer) {
+        if (!observableArrows.contains(observer)) {
+            observableArrows.add(observer);
+        }
+    }
+
+    @Override
+    public void removeObserver(UMLRelationDrawer observer) {
+        if (observableArrows.contains(observer)) {
+            observableArrows.remove(observer);
+        }
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
