@@ -17,35 +17,29 @@ public class Realisation extends UMLRelationDrawer {
     public void drawArrow(Graphics2D g) {
         Stroke buf = g.getStroke();
         g.setStroke(dashed);
-        int x1 = getStart()[0];
-        int y1 = getStart()[1];
-        int x2 = getEnd()[0];
-        int y2 = getEnd()[1];
-        int d = 15;
-        int h = 6;
-        int dx = x2 - x1,
-                dy = y2 - y1;
+        int dx = getEndAnchor()[0] - getStartAnchor()[0],
+                dy = getEndAnchor()[1] - getStartAnchor()[1];
         double D = Math.sqrt(dx*dx + dy*dy);
-        double xm = D - d,
+        double xm = D - ARROW_LENGTH,
                 xn = xm,
-                ym = h,
-                yn = -h,
+                ym = ARROW_WIDTH,
+                yn = -ARROW_WIDTH,
                 x;
         double sin = dy/D,
                 cos = dx/D;
 
-        x = xm*cos - ym*sin + x1;
-        ym = xm*sin + ym*cos + y1;
+        x = xm*cos - ym*sin + getStartAnchor()[0];
+        ym = xm*sin + ym*cos + getStartAnchor()[1];
         xm = x;
 
-        x = xn*cos - yn*sin + x1;
-        yn = xn*sin + yn*cos + y1;
+        x = xn*cos - yn*sin + getStartAnchor()[0];
+        yn = xn*sin + yn*cos + getStartAnchor()[1];
         xn = x;
 
-        int[] xpoints = {(int) xm, x2, (int) xn};
-        int[] ypoints = {(int) ym, y2, (int) yn};
+        int[] xpoints = {(int) xm, getEndAnchor()[0], (int) xn};
+        int[] ypoints = {(int) ym, getEndAnchor()[1], (int) yn};
 
-        g.drawLine(x1, y1, x2, y2);
+        g.drawLine(getStartAnchor()[0], getStartAnchor()[1], getEndAnchor()[0], getEndAnchor()[1]);
         g.setStroke(buf);
         g.setColor(Color.BLACK);
         g.drawPolyline(xpoints, ypoints, 3);

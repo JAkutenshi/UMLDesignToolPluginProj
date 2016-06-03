@@ -5,6 +5,7 @@ import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 import com.jakutenshi.projects.umlplugin.draw.relationships.Generalisation;
 import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
 
@@ -19,6 +20,7 @@ import java.util.Map;
 public class ClassDrawer extends UMLDrawer {
     private LinkedList<DrawnLine> drawnFields;
     private LinkedList<DrawnLine> drawnMethods;
+
 
 
     public ClassDrawer(UMLEntity entity) {
@@ -41,9 +43,12 @@ public class ClassDrawer extends UMLDrawer {
         currentY = drawSeparator(currentY, g);
 //методы
         drawSection(currentY, drawnMethods, g);
+//генерики
+        if (generics != null) {
+            generics.draw(g);
+        }
 
-
-}
+    }
 
     @Override
     protected void fillContent(UMLEntity entity) {
@@ -74,6 +79,10 @@ public class ClassDrawer extends UMLDrawer {
                 drawnMethods.getFirst().setFont(ITALIC_FONT);
             }
         }
+//генерики
+        if (aClass.getTypeParameters().size() != 0) {
+            generics = new TypeParameterDrawer(aClass);
+        }
 
         setFrameWidth(maxLength * SYMBOL_WIDTH + 2 * FRAME_MARGIN);
         setFrameHeight((SYMBOL_HEIGHT + LINE_SPACING) //заголовок
@@ -81,13 +90,9 @@ public class ClassDrawer extends UMLDrawer {
                 + (drawnFields.size() ==  0 ? 1 : drawnFields.size()) * DRAWN_LINE_HEIGHT
                 + (drawnMethods.size() ==  0 ? 1 : drawnMethods.size()) * DRAWN_LINE_HEIGHT
                 + 2 * FRAME_MARGIN);
-    }
-
-    @Override
-    public void fillRelations(UMLEntity entity) {
-        Class aClass = (Class) entity;
-        if (aClass.getExtendsClass() != null) {
-            Generalisation generalisationArrow = new Generalisation();
+        if (generics != null) {
+            setFrameWidth(getFrameWidth() + generics.getFrameWidth() - FRAME_MARGIN * 3);
+            setFrameHeight(getFrameHeight() + generics.getFrameHeight() - FRAME_MARGIN);
         }
     }
 }

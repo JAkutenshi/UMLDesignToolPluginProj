@@ -52,8 +52,4 @@ public class EnumDrawer extends UMLDrawer {
                 + 2 * FRAME_MARGIN);
     }
 
-    @Override
-    public void fillRelations(UMLEntity entity) {
-
-    }
 }

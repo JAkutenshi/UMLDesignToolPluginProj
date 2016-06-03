@@ -5,14 +5,9 @@ import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.Enum;
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
-import com.jakutenshi.projects.umlplugin.draw.ClassDrawer;
-import com.jakutenshi.projects.umlplugin.draw.EnumDrawer;
-import com.jakutenshi.projects.umlplugin.draw.InterfaceDrawer;
-import com.jakutenshi.projects.umlplugin.draw.UMLDrawer;
-import com.jakutenshi.projects.umlplugin.draw.relationships.Composition;
-import com.jakutenshi.projects.umlplugin.draw.relationships.Generalisation;
-import com.jakutenshi.projects.umlplugin.draw.relationships.Realisation;
-import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
+import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
+import com.jakutenshi.projects.umlplugin.draw.*;
+import com.jakutenshi.projects.umlplugin.draw.relationships.*;
 import com.jakutenshi.projects.umlplugin.util.UMLDiagramContainerObserver;
 
 import javax.swing.*;
@@ -31,6 +26,7 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
     private int startDragY;
     private HashMap<String, UMLDrawer> drawers = new HashMap<>();
     private ArrayList<UMLRelationDrawer> arrows = new ArrayList<>();
+    HashMap<String, UMLEntity> entities;
     private int maxDrawnEntityHeight;
     private int maxDrawnEntityWidth;
     private int currentX;
@@ -112,22 +108,23 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
             return;
         }
 
+        for (String key : drawers.keySet()) {
+            drawers.get(key).draw(g);
+        }
         for (UMLRelationDrawer arrow : arrows) {
             arrow.drawArrow(g);
         }
-        /*for (String key : drawers.keySet()) {
-            drawers.get(key).draw(g);
-        }*/
 
     }
 
     @Override
     public void onChange(HashMap<String, UMLEntity> entities) {
-        fillDrawnEntities(entities);
+        this.entities = entities;
+        fillDrawnEntities();
         repaint();
     }
 
-    private void fillDrawnEntities(HashMap<String, UMLEntity> entities) {
+    private void fillDrawnEntities() {
         UMLEntity entity;
         UMLDrawer drawer;
         drawers = new HashMap<>();
@@ -156,8 +153,9 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
 
         setPreferredSize(new Dimension(maxWidth, maxHeight));
 
+        createsRelations();
         fillCoordinates();
-        createsRelations(entities);
+
     }
 
     private void fillCoordinates() {
@@ -182,42 +180,77 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
         }
     }
 
-    private void createsRelations(HashMap<String, UMLEntity> entities) {
+    private void createsRelations() {
+
         UMLEntity entity;
-        UMLEntity targetEntity;
-        UMLDrawer drawer;
-        UMLDrawer targetDrawer;
-        UMLRelationDrawer arrow;
         Class aClass;
-        Interface anIneInterface;
-        Enum anEnum;
+        Interface anInterface;
+        arrows = new ArrayList<>();
 
-        for (String key : drawers.keySet()) {
-            drawer = drawers.get(key);
+        for (String key : entities.keySet()) {
             entity = entities.get(key);
-
             if (entity instanceof Class) {
                 aClass = (Class) entity;
+//обобщение
                 if (aClass.getExtendsClass() != null){
-                    arrow = new Composition();
-                    if (entities.containsKey(aClass.getExtendsClass())) {
-                        targetEntity = entities.get(aClass.getExtendsClass());
-                        targetDrawer = drawers.get(targetEntity.getPackagePath());
-                        arrow.setStartKey(drawer.getKey());
-                        arrow.setStart(drawer.getAnchorX(), drawer.getAnchorY());
-                        arrow.setEndKey(targetDrawer.getKey());
-                        arrow.setEnd(targetDrawer.getAnchorX(), targetDrawer.getAnchorY());
-                        drawer.addObserver(arrow);
-                        targetDrawer.addObserver(arrow);
-                        arrows.add(arrow);
+                    addRelarioship(aClass, aClass.getExtendsClass(), new Generalisation());
+                }
+//реализация
+                if (aClass.getImplementInterfaces() != null && aClass.getImplementInterfaces().size() != 0) {
+                    for (String anImplInterface : aClass.getImplementInterfaces()) {
+                        addRelarioship(aClass, anImplInterface, new Realisation());
+                    }
+                }
+//композиция
+                if (!aClass.isUtility()) {
+                    for (Field field : aClass.getFields()) {
+                        //учитываем экземпляры самого класса
+                        if (!field.getTypePath().equals(aClass.getPackagePath())) {
+                            addRelarioship(aClass, field.getTypePath(), new Composition());
+                        }
                     }
                 }
             } else if (entity instanceof Interface) {
-                drawer = new InterfaceDrawer(entity);
-            } else {
-                drawer = new EnumDrawer(entity);
+//обобщение
+                anInterface = (Interface) entity;
+                if (anInterface.getExtendedInterface() != null){
+                    addRelarioship(anInterface, anInterface.getExtendedInterface(), new Generalisation());
+                }
             }
-
+//внутренние сущности
+            if (entity.getInnerEntities() != null && entity.getInnerEntities().size() != 0) {
+                for (String innerEntity : entity.getInnerEntities()) {
+                    addRelarioship(entity, innerEntity, new Inclusition());
+                }
+            }
         }
+    }
+
+    private void addRelarioship(UMLEntity entity, String withEntity, UMLRelationDrawer type) {
+        if (entities.containsKey(withEntity)) {
+            addArrow(type, entity, entities.get(withEntity));
+        } else {
+            if (!drawers.containsKey(withEntity)) {
+                BlackBox blackBox = new BlackBox(withEntity);
+                drawers.put(blackBox.getKey(), blackBox);
+            }
+            addArrow(type, drawers.get(entity.getPackagePath()), drawers.get(withEntity));
+        }
+    }
+
+    private void addArrow(UMLRelationDrawer arrow, UMLDrawer fromDrawer, UMLDrawer toDrawer) {
+        arrow.setStartDrawerCoordinates(fromDrawer.generateCoords());
+        arrow.setEndDrawerCoordinates(toDrawer.generateCoords());
+        arrow.setStart(fromDrawer.getAnchorX(), fromDrawer.getAnchorY());
+        arrow.setEnd(toDrawer.getAnchorX(), toDrawer.getAnchorY());
+        arrow.setStartKey(fromDrawer.getKey());
+        arrow.setEndKey(toDrawer.getKey());
+        fromDrawer.addObserver(arrow);
+        toDrawer.addObserver(arrow);
+        arrows.add(arrow);
+    }
+
+    private void addArrow(UMLRelationDrawer arrow, UMLEntity from, UMLEntity to) {
+        addArrow(arrow, drawers.get(from.getPackagePath()), drawers.get(to.getPackagePath()));
     }
 }

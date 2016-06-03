@@ -58,6 +58,8 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
     private int offset = 0;
     private int anchorX = 0;
     private int anchorY = 0;
+    protected TypeParameterDrawer generics;
+
 
     public final static int LINE_SPACING = 10;
     public final static int FRAME_MARGIN = 10;
@@ -78,7 +80,9 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
 
     public abstract void draw(Graphics2D g);
     protected abstract void fillContent(UMLEntity entity);
-    public abstract void fillRelations(UMLEntity entity);
+
+    public UMLDrawer() {
+    }
 
     public UMLDrawer(UMLEntity entity) {
         key = entity.getPackagePath();
@@ -166,6 +170,9 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
         this.x = x;
         anchorX = x + frameWidth / 2;
         offset = x + FRAME_MARGIN;
+        if (generics != null) {
+            generics.setX(getX() + getFrameWidth() - FRAME_MARGIN * 3);
+        }
         notifyObservers();
     }
 
@@ -176,6 +183,9 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
     public void setY(int y) {
         this.y = y;
         anchorY = y + frameHeight / 2;
+        if (generics != null ) {
+            generics.setY(getY() - generics.getFrameHeight() + FRAME_MARGIN);
+        }
         notifyObservers();
     }
 
@@ -204,14 +214,15 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
 
     public void setAnchorY(int anchorY) {
         this.anchorY = anchorY;
-        y = anchorY - frameHeight / 2;
+        setY(anchorY - frameHeight / 2);
         notifyObservers();
     }
 
     @Override
     public void notifyObservers() {
+
         for (UMLRelationDrawer observableArrow : observableArrows) {
-            observableArrow.onChange(key, anchorX, anchorY);
+            observableArrow.onChange(key, anchorX, anchorY, generateCoords());
         }
     }
 
@@ -235,5 +246,12 @@ public abstract class UMLDrawer implements Observable <UMLRelationDrawer> {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public int[][] generateCoords() {
+        int[][] coords =
+                {{x, x + frameWidth, x + frameWidth, x},
+                        {y, y, y + frameHeight, y + frameHeight}};
+        return coords;
     }
 }

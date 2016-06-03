@@ -30,6 +30,10 @@ public class InterfaceDrawer extends UMLDrawer {
         currentY = drawSeparator(currentY, g);
 //сигнатуры
         drawSection(currentY, drawnSignatures, g);
+//генерики
+        if (generics != null) {
+            generics.draw(g);
+        }
     }
 
     @Override
@@ -48,6 +52,10 @@ public class InterfaceDrawer extends UMLDrawer {
                 maxLength = drawnSignatures.getFirst().getLine().length();
             }
         }
+//генерики
+        if (anInterface.getTypeParameters().size() != 0) {
+            generics = new TypeParameterDrawer(anInterface);
+        }
 
         setFrameWidth(maxLength * SYMBOL_WIDTH + 2 * FRAME_MARGIN);
         setFrameHeight((SYMBOL_HEIGHT + LINE_SPACING) //заголовок
@@ -55,10 +63,9 @@ public class InterfaceDrawer extends UMLDrawer {
                 + (drawnSignatures.size() ==  0 ? 1 : drawnSignatures.size())
                 * (SYMBOL_HEIGHT + LINE_SPACING)
                 + 2 * FRAME_MARGIN);
-    }
-
-    @Override
-    public void fillRelations(UMLEntity entity) {
-
+        if (generics != null) {
+            setFrameWidth(getFrameWidth() + generics.getFrameWidth() - FRAME_MARGIN * 3);
+            setFrameHeight(getFrameHeight() + generics.getFrameHeight() - FRAME_MARGIN);
+        }
     }
 }

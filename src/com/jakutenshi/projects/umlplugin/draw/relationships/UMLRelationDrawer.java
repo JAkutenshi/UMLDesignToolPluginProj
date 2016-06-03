@@ -1,6 +1,5 @@
 package com.jakutenshi.projects.umlplugin.draw.relationships;
 
-import com.jakutenshi.projects.umlplugin.draw.GraphicsMethods;
 import com.jakutenshi.projects.umlplugin.util.ObservableDrawer;
 
 import java.awt.*;
@@ -10,77 +9,66 @@ import java.awt.*;
  */
 public abstract class UMLRelationDrawer implements ObservableDrawer {
     private String startKey;
-    private int[] start = {0, 0};
+    private int[] startAnchor = {0, 0};
+    protected int[] from = startAnchor;
+    private int[][] startDrawerCoordinates;
     private String endKey;
-    private int[] end = {0, 0};
+    private int[] endAnchor = {0, 0};
+    protected int[] to = endAnchor;
+    private int[][] endDrawerCoordinates;
+
+
+    public final static int ARROW_WIDTH = 6;
+    public final static int ARROW_LENGTH = 15;
 
     public abstract void drawArrow(Graphics2D g);
 
-    public int[] findArrowPoint(int[] start, int[] end, double length) {
-        double PesX = end[0] - start[0];
-        double PesY = end[1] - start[1];
-        double A = PesX / PesY;
-        double B = (start[0] * PesY - start[1] * PesX) / PesY;
-        double C = B - end[0];
-        double D = end[0];
-        double alpha = (A * A + 1);
-        double beta = 2 * A * C - 2 * D;
-        double gamma = C * C + D * D + length * length;
-        double y1 = (-beta + Math.sqrt(beta * beta - 4 * alpha * gamma)) / (2 * alpha);
-        double y2 = (-beta - Math.sqrt(beta * beta - 4 * alpha * gamma)) / (2 * alpha);
-        double x1 = A * y1 + B;
-        double x2 = A * y2 + B;
-        int[] p1 = {(int)x1, (int)y1};
-        int[] p2 = {(int)x2, (int)y2};
-        int[] arrow;
-        if (GraphicsMethods.length(start, p1) < GraphicsMethods.length(start, p2)) {
-            arrow = p1;
-        } else {
-            arrow = p2;
-        }
-        return arrow;
-    }
 
-    public UMLRelationDrawer(String startKey, String endKey, int[] start, int[] end) {
+
+    public UMLRelationDrawer(String startKey, String endKey, int[] startAnchor, int[] endAnchor) {
         this.startKey = startKey;
         this.endKey = endKey;
-        this.start = start;
-        this.end = end;
+        this.startAnchor = startAnchor;
+        this.endAnchor = endAnchor;
     }
 
     public UMLRelationDrawer() {
     }
 
-    public int[] getStart() {
-        return start;
+    public int[] getStartAnchor() {
+        return startAnchor;
     }
 
-    public void setStart(int[] start) {
-        this.start = start;
+    public void setStartAnchor(int[] startAnchor) {
+        this.startAnchor = startAnchor;
+    }
+
+
+
+    public int[] getEndAnchor() {
+        return endAnchor;
+    }
+
+    public void setEndAnchor(int[] endAnchor) {
+        this.endAnchor = endAnchor;
     }
 
     public void setStart(int x, int y) {
-        if (start == null) {
-            start = new int[2];
+        if (startAnchor == null) {
+            startAnchor = new int[2];
         }
-        start[0] = x;
-        start[1] = y;
-    }
-
-    public int[] getEnd() {
-        return end;
-    }
-
-    public void setEnd(int[] end) {
-        this.end = end;
+        startAnchor[0] = x;
+        startAnchor[1] = y;
+        //computeFromAndTo();
     }
 
     public void setEnd(int x, int y) {
-        if (end == null) {
-            end = new int[2];
+        if (endAnchor == null) {
+            endAnchor = new int[2];
         }
-        end[0] = x;
-        end[1] = y;
+        endAnchor[0] = x;
+        endAnchor[1] = y;
+        //computeFromAndTo();
     }
 
     public String getStartKey() {
@@ -100,16 +88,77 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
     }
 
     @Override
-    public void onChange(String key, int x, int y) {
+    public void onChange(String key, int x, int y, int[][] coords) {
         if (key.equals(startKey)) {
-           setStart(x, y);
+            startDrawerCoordinates = coords;
+            setStart(x, y);
         } else if (key.equals(endKey)) {
+            endDrawerCoordinates = coords;
             setEnd(x, y);
         }
     }
 
+    public void setStartDrawerCoordinates(int[][] startDrawerCoordinates) {
+        this.startDrawerCoordinates = startDrawerCoordinates;
+    }
+
+    public void setEndDrawerCoordinates(int[][] endDrawerCoordinates) {
+        this.endDrawerCoordinates = endDrawerCoordinates;
+    }
+
     public boolean isBindWith(String key) {
         return startKey.equals(key) || endKey.equals(key);
+    }
+
+    private void computeFromAndTo() {
+        if (startAnchor[0] == endAnchor[0]
+                && startAnchor[1] == endAnchor[1]) return;
+        int[] fromCrossPoint = crossWithRect(startDrawerCoordinates);
+        int[] toCrossPoint = crossWithRect(endDrawerCoordinates);
+
+    }
+
+    private int[] crossWithRect(int[][] rectCoords) {
+        int[] crossPoint = null;
+        for (int i = 0; i < 3; i++) {
+            crossPoint = crossPoint(rectCoords[0][i],
+                    rectCoords[1][i],
+                    rectCoords[0][i + 1],
+                    rectCoords[1][i + 1]);
+            if (crossPoint != null) break;
+        }
+        if (crossPoint == null) {
+            crossPoint = crossPoint(rectCoords[0][0],
+                    rectCoords[1][0],
+                    rectCoords[0][3],
+                    rectCoords[1][3]);
+        }
+        return crossPoint;
+    }
+
+    private int[] crossPoint(int x1, int y1, int x2, int y2) {
+        double A = (endAnchor[1] - startAnchor[1]) / (endAnchor[0] - startAnchor[0]);
+        double B = startAnchor[1] - startAnchor[0] * A;
+        double cx = 0;
+        double cy = 0;
+        if (x1 == x2) {
+            cx = x1;
+            cy = A * cx + B;
+        } else if (y1 == y2) {
+            cy = y1;
+            cx = cy / A - B;
+        }
+
+        if (startAnchor[0] < cx && cx < endAnchor[0]
+                && startAnchor[1] < cy && cy < endAnchor[1]) {
+            int[] c = new int[2];
+            c[0] = (int) cx;
+            c[1] = (int) cy;
+            return c;
+        } else {
+            return null;
+        }
+
     }
 }
 
