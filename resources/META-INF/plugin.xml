@@ -7,6 +7,7 @@
     <description><![CDATA[
         Plugin for IntelliJ IDEA CE 2016.1.1 for UML designing and code generation. <br>
         Starts as my Bachelor's grade works.<br>
+        GitHub: https://github.com/JAkutenshi/UMLDesignToolPluginProj<br>
         <br>
         by JAkutenshi<br>
     ]]></description>
@@ -42,47 +43,32 @@
                 text="Generate diagram"
                 description="Generate class-diagram by your code"
                 icon="/icons/gen-diagram.png">
-            <add-to-group group-id="NavBarToolBar"/>
         </action>
-        <action class="com.jakutenshi.projects.umlplugin.actions.ExportXMLAction"
-                id="UMLPlugin.ExportXML"
-                text="Export XML"
-                description="Export class-diagram to XML-file"
-                icon="/icons/export-xml.png">
+        <action class="com.jakutenshi.projects.umlplugin.actions.ZoomInAction"
+                id="UMLPlugin.ZoomIn"
+                text="Zoom In"
+                description="Zoom in the class-diagram view"
+                icon="/icons/zoom-in.png">
         </action>
-        <action class="com.jakutenshi.projects.umlplugin.actions.ImportXMLAction"
-                id="UMLPlugin.ImportXML"
-                text="Import XML"
-                description="Import elements from XML-file"
-                icon="/icons/import-xml.png">
+        <action class="com.jakutenshi.projects.umlplugin.actions.ZoomOutAction"
+                id="UMLPlugin.ZoomOut"
+                text="Zoom Out"
+                description="Zoom out the class-diagram view"
+                icon="/icons/zoom-out.png">
         </action>
-        <action class="com.jakutenshi.projects.umlplugin.actions.CreateElementAction"
-                id="UMLPlugin.CreateElement"
-                text="Create Element"
-                description="Create new element to class-diagram"
-                icon="/icons/create-element.png">
-        </action>
+	    <action class="com.jakutenshi.projects.umlplugin.actions.ReturnScaleToDefaultAction"
+	            id="UMLPlugin.ReturnScale"
+	            text="Return scale"
+	            description="Return class-diagram view scale to default value 1:1"
+	            icon="/icons/return-scale-to-default.png">
+	    </action>
 
 		<group id="UMLPlugin.UI.Toolbar">
             <reference ref="UMLPlugin.GenDiagram"/>
             <separator/>
-            <reference ref="UMLPlugin.ExportXML"/>
-            <reference ref="UMLPlugin.ImportXML"/>
-            <separator/>
-            <reference ref="UMLPlugin.CreateElement"/>
-        </group>
-
-        <group id="UMLPlugin.UI.ToolsMenu"
-               text="UML Plugin Tools"
-               popup="true"
-               description="UML Plugin Tools">
-            <add-to-group group-id="ToolsMenu"/>
-            <reference ref="UMLPlugin.GenDiagram"/>
-            <separator/>
-            <reference ref="UMLPlugin.ExportXML"/>
-            <reference ref="UMLPlugin.ImportXML"/>
-            <separator/>
-            <reference ref="UMLPlugin.CreateElement"/>
+            <reference ref="UMLPlugin.ZoomIn"/>
+            <reference ref="UMLPlugin.ZoomOut"/>
+            <reference ref="UMLPlugin.ReturnScale"/>
         </group>
     </actions>
 </idea-plugin>

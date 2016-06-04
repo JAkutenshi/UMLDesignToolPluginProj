@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.parser;
+package com.jakutenshi.projects.umlplugin.parsers;
 
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiKeyword;

@@ -1,7 +1,7 @@
 package com.jakutenshi.projects.umlplugin.container;
 
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
-import com.jakutenshi.projects.umlplugin.draw.UMLDrawer;
+import com.jakutenshi.projects.umlplugin.drawers.UMLDrawer;
 import com.jakutenshi.projects.umlplugin.util.Observable;
 import com.jakutenshi.projects.umlplugin.util.UMLDiagramContainerObserver;
 

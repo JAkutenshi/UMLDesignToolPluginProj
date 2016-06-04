@@ -4,7 +4,6 @@ import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
 
-
 import java.util.ArrayList;
 import java.util.HashSet;
 

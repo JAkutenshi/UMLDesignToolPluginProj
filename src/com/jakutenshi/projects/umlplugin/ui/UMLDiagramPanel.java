@@ -2,12 +2,11 @@ package com.jakutenshi.projects.umlplugin.ui;
 
 import com.jakutenshi.projects.umlplugin.container.DiagramContainer;
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
-import com.jakutenshi.projects.umlplugin.container.entities.Enum;
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
-import com.jakutenshi.projects.umlplugin.draw.*;
-import com.jakutenshi.projects.umlplugin.draw.relationships.*;
+import com.jakutenshi.projects.umlplugin.drawers.*;
+import com.jakutenshi.projects.umlplugin.drawers.relationships.*;
 import com.jakutenshi.projects.umlplugin.util.UMLDiagramContainerObserver;
 
 import javax.swing.*;
@@ -31,21 +30,20 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
     private int maxDrawnEntityWidth;
     private int currentX;
     private int currentY;
+    private double scale = 1;
 
     private final int SPACE = 10;
 
     public UMLDiagramPanel() {
-        setLayout(null);
-        setSize(500, 500);
-
+        setPreferredSize(new Dimension(5000, 5000));
         addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
                 if (draggedDrawer != null) {
                     if (0 <= e.getX() && e.getX() + draggedDrawer.getFrameWidth() / 2 <= getSize().width
                             && 0 <= e.getY() && e.getY() + draggedDrawer.getFrameHeight() / 2 <= getSize().height) {
-                        draggedDrawer.setAnchorX(e.getX());
-                        draggedDrawer.setAnchorY(e.getY());
+                        draggedDrawer.setAnchorX((int) (e.getX() / scale));
+                        draggedDrawer.setAnchorY((int) (e.getY() / scale));
                         repaint();
                     }
                 }
@@ -55,7 +53,7 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                getIt(e.getX(), e.getY(), drawers);
+                getIt((int) (e.getX() / scale), (int) (e.getY() / scale), drawers);
             }
 
             @Override
@@ -67,42 +65,37 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
         DiagramContainer.getInstance().addObserver(this);
     }
 
-    private boolean getIt(int x, int y, HashMap<String, UMLDrawer> drawers) {
-        UMLDrawer drawer;
-        for (String key : drawers.keySet()) {
-            drawer = drawers.get(key);
-            if (isInFrame(x, y, drawer)) {
-                draggedDrawer = drawer;
-                startDragX = drawer.getX();
-                startDragY = drawer.getY();
-                return true;
-            }
-        }
-        return false;
+    public void returnScaleToDefault() {
+        scale = 1;
+        applyZoom();
     }
 
-    private boolean isInFrame(int x, int y, UMLDrawer drawer) {
-        if (drawer.getX() <= x && x <= drawer.getX() + drawer.getFrameWidth()
-                && drawer.getY() <= y && y <= drawer.getY() + drawer.getFrameHeight()) {
-            return true;
-        }
-
-        return false;
+    public void zoomIn() {
+        scale *= 2;
+        applyZoom();
     }
 
-    private void clearPane(Graphics2D g) {
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, getWidth(), getHeight());
-        g.setColor(Color.BLACK);
+    public void zoomOut() {
+        scale /= 2;
+        applyZoom();
     }
 
+    private void applyZoom() {
+        setPreferredSize(new Dimension((int) scale * getWidth(), (int) scale * getHeight()));
+        validate();
+        repaint();
+    }
+
+    private void zoom(Graphics2D g) {
+        g.scale(scale, scale);
+    }
 
     @Override
     protected void paintComponent(Graphics graphics) {
         super.paintComponent(graphics);
         Graphics2D g = (Graphics2D) graphics;
-
         clearPane(g);
+        zoom(g);
 
         if (drawers.size() == 0) {
             return;
@@ -252,5 +245,34 @@ public class UMLDiagramPanel extends JPanel implements UMLDiagramContainerObserv
 
     private void addArrow(UMLRelationDrawer arrow, UMLEntity from, UMLEntity to) {
         addArrow(arrow, drawers.get(from.getPackagePath()), drawers.get(to.getPackagePath()));
+    }
+
+    private boolean getIt(int x, int y, HashMap<String, UMLDrawer> drawers) {
+        UMLDrawer drawer;
+        for (String key : drawers.keySet()) {
+            drawer = drawers.get(key);
+            if (isInFrame(x, y, drawer)) {
+                draggedDrawer = drawer;
+                startDragX = drawer.getX();
+                startDragY = drawer.getY();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isInFrame(int x, int y, UMLDrawer drawer) {
+        if (drawer.getX() <= x && x <= drawer.getX() + drawer.getFrameWidth()
+                && drawer.getY() <= y && y <= drawer.getY() + drawer.getFrameHeight()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void clearPane(Graphics2D g) {
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.BLACK);
     }
 }

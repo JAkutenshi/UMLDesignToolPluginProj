@@ -1,18 +1,13 @@
-package com.jakutenshi.projects.umlplugin.draw;
+package com.jakutenshi.projects.umlplugin.drawers;
 
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Field;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Method;
-import com.jakutenshi.projects.umlplugin.container.entities.attributes.TypeParameter;
-import com.jakutenshi.projects.umlplugin.draw.relationships.Generalisation;
-import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
 import java.util.LinkedList;
-import java.util.Map;
 
 /**
  * Created by JAkutenshi on 31.05.2016.

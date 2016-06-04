@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.draw;
+package com.jakutenshi.projects.umlplugin.drawers;
 
 import com.jakutenshi.projects.umlplugin.container.entities.Enum;
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;

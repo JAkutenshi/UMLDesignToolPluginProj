@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.draw;
+package com.jakutenshi.projects.umlplugin.drawers;
 
 import com.jakutenshi.projects.umlplugin.container.entities.Class;
 import com.jakutenshi.projects.umlplugin.container.entities.Interface;

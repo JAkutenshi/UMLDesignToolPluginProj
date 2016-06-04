@@ -1,11 +1,10 @@
-package com.jakutenshi.projects.umlplugin.draw;
+package com.jakutenshi.projects.umlplugin.drawers;
 
 import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.container.entities.attributes.Keyword;
-import com.jakutenshi.projects.umlplugin.draw.relationships.UMLRelationDrawer;
+import com.jakutenshi.projects.umlplugin.drawers.relationships.UMLRelationDrawer;
 import com.jakutenshi.projects.umlplugin.util.Observable;
 
-import javax.swing.text.AttributeSet;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.ArrayList;

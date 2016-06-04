@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.draw.relationships;
+package com.jakutenshi.projects.umlplugin.drawers.relationships;
 
 import com.jakutenshi.projects.umlplugin.util.ObservableDrawer;
 

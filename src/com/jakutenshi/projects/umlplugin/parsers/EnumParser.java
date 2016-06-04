@@ -1,4 +1,4 @@
-package com.jakutenshi.projects.umlplugin.parser;
+package com.jakutenshi.projects.umlplugin.parsers;
 
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiEnumConstant;
