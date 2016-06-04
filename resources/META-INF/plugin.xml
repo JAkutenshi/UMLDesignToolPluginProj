@@ -1,7 +1,7 @@
 <idea-plugin>
     <id>com.jakutenshi.projects.umlplugin</id>
     <name>UML Design Tool Plugin</name>
-    <version>0.1</version>
+    <version>0.1a</version>
     <vendor email="jakutenshi@gmail.com">JAkutenshi</vendor>
 
     <description><![CDATA[
