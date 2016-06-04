@@ -14,7 +14,9 @@
 
     <change-notes><![CDATA[
         Alpha version.
-        Can do... Nothing :< Yet.
+        Genering UML Diagrams by your Java project source code.<br>
+        Known bugs: scroll bar problem.<br>
+        Don't support multithreading yet.<br>
         ]]>
     </change-notes>
 

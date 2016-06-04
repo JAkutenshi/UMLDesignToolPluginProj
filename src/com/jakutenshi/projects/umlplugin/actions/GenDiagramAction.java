@@ -11,8 +11,10 @@ import com.jakutenshi.projects.umlplugin.container.entities.UMLEntity;
 import com.jakutenshi.projects.umlplugin.parsers.ClassParser;
 import com.jakutenshi.projects.umlplugin.parsers.EnumParser;
 import com.jakutenshi.projects.umlplugin.parsers.InterfaceParser;
+import com.sun.jna.platform.unix.X11;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by JAkutenshi on 25.05.2016.
@@ -26,7 +28,10 @@ public class GenDiagramAction extends AnAction {
         project = anActionEvent.getProject();
         if (project != null) {
             psiManager = PsiManager.getInstance(project);
+            //Date d = new Date();
+            //long start = d.getTime();
             parseProject();
+            //System.out.println(d.getTime() - start);
         }
     }
 
