@@ -10,11 +10,11 @@ import java.awt.*;
 public abstract class UMLRelationDrawer implements ObservableDrawer {
     private String startKey;
     private int[] startAnchor = {0, 0};
-    protected int[] from = startAnchor;
+    protected int[] from = new int[2];
     private int[][] startDrawerCoordinates;
     private String endKey;
     private int[] endAnchor = {0, 0};
-    protected int[] to = endAnchor;
+    protected int[] to = new int[2];
     private int[][] endDrawerCoordinates;
 
 
@@ -59,7 +59,6 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
         }
         startAnchor[0] = x;
         startAnchor[1] = y;
-        //computeFromAndTo();
     }
 
     public void setEnd(int x, int y) {
@@ -68,7 +67,6 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
         }
         endAnchor[0] = x;
         endAnchor[1] = y;
-        //computeFromAndTo();
     }
 
     public String getStartKey() {
@@ -110,35 +108,79 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
         return startKey.equals(key) || endKey.equals(key);
     }
 
-    private void computeFromAndTo() {
+    protected void computeFromAndTo() {
         if (startAnchor[0] == endAnchor[0]
-                && startAnchor[1] == endAnchor[1]) return;
-        int[] fromCrossPoint = crossWithRect(startDrawerCoordinates);
-        int[] toCrossPoint = crossWithRect(endDrawerCoordinates);
+                && startAnchor[1] == endAnchor[1]) {
+            return;
+        }
+        if (from == null) {
+            from = new int[2];
+        }
+        if (to == null) {
+            to = new int[2];
+        }
+        if (endAnchor[0] == startAnchor[0]) {
+            from[0] = startAnchor[0];
+            to[0] = startAnchor[0];
+
+            from[1] =
+                    Math.abs(endAnchor[1] - startDrawerCoordinates[1][1]) <
+                    Math.abs(endAnchor[1] - startDrawerCoordinates[1][2]) ?
+                            startDrawerCoordinates[1][1] :
+                            startDrawerCoordinates[1][2]
+            ;
+            to[1] =
+                    Math.abs(startAnchor[1] - endDrawerCoordinates[1][3]) <
+                    Math.abs(startAnchor[1] - endDrawerCoordinates[1][0]) ?
+                            endDrawerCoordinates[1][3] :
+                            endDrawerCoordinates[1][0]
+            ;
+
+        } else if (endAnchor[1] == startAnchor[1]) {
+            from[1] = endAnchor[1];
+            to[1] = endAnchor[1];
+
+            from[0] =
+                    Math.abs(endAnchor[0] - startDrawerCoordinates[0][1]) <
+                    Math.abs(endAnchor[0] - startDrawerCoordinates[0][0]) ?
+                            startDrawerCoordinates[0][1] :
+                            startDrawerCoordinates[0][0]
+            ;
+            to[0] =
+                    Math.abs(startAnchor[0] - endDrawerCoordinates[0][0]) <
+                    Math.abs(startAnchor[0] - endDrawerCoordinates[0][2]) ?
+                            endDrawerCoordinates[0][0] :
+                            endDrawerCoordinates[0][2]
+            ;
+        } else {
+            from = crossWithRect(startDrawerCoordinates);
+            to = crossWithRect(endDrawerCoordinates);
+        }
 
     }
 
     private int[] crossWithRect(int[][] rectCoords) {
         int[] crossPoint = null;
-        for (int i = 0; i < 3; i++) {
+            for (int i = 0; i < 3; i++) {
             crossPoint = crossPoint(rectCoords[0][i],
                     rectCoords[1][i],
                     rectCoords[0][i + 1],
                     rectCoords[1][i + 1]);
             if (crossPoint != null) break;
-        }
-        if (crossPoint == null) {
-            crossPoint = crossPoint(rectCoords[0][0],
-                    rectCoords[1][0],
-                    rectCoords[0][3],
-                    rectCoords[1][3]);
-        }
+            }
+            if (crossPoint == null) {
+                crossPoint = crossPoint(rectCoords[0][0],
+                        rectCoords[1][0],
+                        rectCoords[0][3],
+                        rectCoords[1][3]);
+            }
         return crossPoint;
     }
 
     private int[] crossPoint(int x1, int y1, int x2, int y2) {
-        double A = (endAnchor[1] - startAnchor[1]) / (endAnchor[0] - startAnchor[0]);
+        double A = ((double)(endAnchor[1] - startAnchor[1])) / ((double) (endAnchor[0] - startAnchor[0]));
         double B = startAnchor[1] - startAnchor[0] * A;
+
         double cx = 0;
         double cy = 0;
         if (x1 == x2) {
@@ -146,11 +188,12 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
             cy = A * cx + B;
         } else if (y1 == y2) {
             cy = y1;
-            cx = cy / A - B;
+            cx = (cy - B) / A;
         }
 
-        if (startAnchor[0] < cx && cx < endAnchor[0]
-                && startAnchor[1] < cy && cy < endAnchor[1]) {
+
+        if (isPointInSegment(cx, cy, startAnchor[0], startAnchor[1], endAnchor[0], endAnchor[1])
+                && isPointInSegment(cx, cy, x1, y1, x2, y2)) {
             int[] c = new int[2];
             c[0] = (int) cx;
             c[1] = (int) cy;
@@ -159,6 +202,39 @@ public abstract class UMLRelationDrawer implements ObservableDrawer {
             return null;
         }
 
+    }
+
+    protected double length(int[] a, int[] b) {
+        return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
+    }
+
+    private boolean isPointInSegment(double x, double y, int x1, int y1, int x2, int y2) {
+        return ((x1 <= x && x <= x2)
+                || (x2 <= x && x <= x1))
+                && ((y1 <= y && y <= y2)
+                || (y2 <= y && y <= y1));
+    }
+
+    protected boolean isRectContacts() {
+        boolean is = false;
+        for (int i = 0; i < 4; i++) {
+            is = isPointInRect(startDrawerCoordinates[0][i],
+                    startDrawerCoordinates[1][i], endDrawerCoordinates);
+            if (is) return is;
+            is = isPointInRect(endDrawerCoordinates[0][i],
+                    endDrawerCoordinates[1][i], startDrawerCoordinates);
+            if (is) return is;
+        }
+
+        is = isPointInRect(startAnchor[0], startAnchor[1], endDrawerCoordinates);
+        is = isPointInRect(endAnchor[0], endAnchor[1], startDrawerCoordinates);
+
+        return is;
+    }
+
+    private boolean isPointInRect(int x, int y, int[][] rect) {
+        return (rect[0][0] <= x && x <= rect[0][1]
+                && rect[1][1] <= y && y <= rect[1][2]);
     }
 }
 

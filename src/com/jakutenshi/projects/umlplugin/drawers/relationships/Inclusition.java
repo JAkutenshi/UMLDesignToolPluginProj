@@ -8,8 +8,10 @@ import java.awt.*;
 public class Inclusition extends UMLRelationDrawer {
     @Override
     public void drawArrow(Graphics2D g) {
-        int dx = getStartAnchor()[0] - getEndAnchor()[0],
-                dy = getStartAnchor()[1] - getEndAnchor()[1];
+        computeFromAndTo();
+        if (isRectContacts()) return;
+        int dx = from[0] - to[0],
+                dy = from[1] - to[1];
         double D = Math.sqrt(dx*dx + dy*dy);
         double xm = D - ARROW_WIDTH,
                 xn = xm,
@@ -21,20 +23,20 @@ public class Inclusition extends UMLRelationDrawer {
         double sin = dy/D,
                 cos = dx/D;
 
-        x = xm*cos - ym*sin + getEndAnchor()[0];
-        ym = xm*sin + ym*cos + getEndAnchor()[1];
+        x = xm*cos - ym*sin + to[0];
+        ym = xm*sin + ym*cos + to[1];
         xm = x;
 
-        x = xn*cos - yn*sin + getEndAnchor()[0];
-        yn = xn*sin + yn*cos + getEndAnchor()[1];
+        x = xn*cos - yn*sin + to[0];
+        yn = xn*sin + yn*cos + to[1];
         xn = x;
 
-        x = xr*cos - yr*sin + getEndAnchor()[0];
-        yr = xr*sin + yr*cos + getEndAnchor()[1];
+        x = xr*cos - yr*sin + to[0];
+        yr = xr*sin + yr*cos + to[1];
         xr = x;
 
         g.setColor(Color.BLACK);
-        g.drawLine(getStartAnchor()[0], getStartAnchor()[1], getEndAnchor()[0], getEndAnchor()[1]);
+        g.drawLine(from[0], from[1], to[0], to[1]);
         g.drawLine((int) xm, (int) ym, (int) xn, (int) yn);
         int r = ARROW_WIDTH * 2;
         xr = xr - (r / 2);

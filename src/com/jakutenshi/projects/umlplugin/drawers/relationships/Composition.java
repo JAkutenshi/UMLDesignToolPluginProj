@@ -8,8 +8,12 @@ import java.awt.*;
 public class Composition extends UMLRelationDrawer{
     @Override
     public void drawArrow(Graphics2D g) {
-        int dx = from[0] - to[0],
-                dy = from[1] - to[1];
+        computeFromAndTo();
+        if (isRectContacts()) return;
+        //if (from == null || to == null || length(to, from) == 0) return;
+        int dx = from[0] - to[0];
+        int dy = from[1] - to[1];
+
         double D = Math.sqrt(dx*dx + dy*dy);
         double xm = D - ARROW_LENGTH,
                 xn = xm,
